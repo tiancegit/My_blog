@@ -1,8 +1,10 @@
+# coding=utf-8
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
-app.config["BOOTSTRAP_SERVE_LOCAL"] = True
+# 配置bootstrap是否使用本地的文件。
+app.config["BOOTSTRAP_SERVE_LOCAL"] = False
 bootstrap = Bootstrap(app)
 
 
