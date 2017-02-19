@@ -4,7 +4,7 @@ from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 # 配置bootstrap是否使用本地的文件。
-app.config["BOOTSTRAP_SERVE_LOCAL"] = False
+app.config["BOOTSTRAP_SERVE_LOCAL"] = True
 bootstrap = Bootstrap(app)
 
 
@@ -13,9 +13,24 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/about_me/')
-def about_me():
-    return 'About_me'
+@app.route('/tech')
+def tech():
+    return 'tech'
+
+
+@app.route('/isay')
+def isay():
+    return 'isay'
+
+
+@app.route('/music')
+def music():
+    return 'music'
+
+
+@app.route('/about')
+def about():
+    return 'About'
 
 
 @app.route('/post/')
