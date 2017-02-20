@@ -1,0 +1,11 @@
+{# 测试moment 中文 #}
+{% extends 'base.html' %}
+
+{% block title %}宁缺のblog{% endblock %}
+
+{% block page_content %}
+    <br />
+    <div class="page-header">
+    <p>the local date and time is {{ moment(current_time).format('LLL') }}</p>
+    </div>
+{% endblock %}
