@@ -17,6 +17,9 @@ class Config:
 class DevelopmentConfig(Config):
     # 开发配置子类
     DEBUG = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    # 配置bootstrap是否使用本地的文件。
+    BOOTSTRAP_SERVE_LOCAL = True
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = '587'
     MAIL_USE_TLS = True  # SMTP 服务器好像只需要TLS协议

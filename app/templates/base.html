@@ -34,15 +34,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" id="logo" href="{{ url_for('index') }}">宁缺の博客</a>
+                <a class="navbar-brand" id="logo" href="{{ url_for('main.index') }}">宁缺の博客</a>
                 </div>
 				<div class="navbar-collapse collapse navbar-responsive-collapse">
 				    <ul class="nav navbar-nav">
-				    	<li class="active"><a href="{{ url_for('index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
-                        <li><a href="{{ url_for('tech') }}" title="技术">技术</a></li>
-                        <li><a href="{{ url_for('isay') }}" title="杂谈">杂谈</a></li>
-                        <li><a href="{{ url_for('music') }}" title="音乐">音乐</a></li>
-                        <li><a href="{{ url_for('about') }}" title="关于">关于</a></li>
+				    	<li class="active"><a href="{{ url_for('main.index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
+                        <li><a href="{{ url_for('main.tech') }}" title="技术">技术</a></li>
+                        <li><a href="{{ url_for('main.isay') }}" title="杂谈">杂谈</a></li>
+                        <li><a href="{{ url_for('main.music') }}" title="音乐">音乐</a></li>
+                        <li><a href="{{ url_for('main.about') }}" title="关于">关于</a></li>
                     </ul>
                 </div>
 			</div>
