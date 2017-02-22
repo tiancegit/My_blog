@@ -43,6 +43,11 @@
                         <li><a href="{{ url_for('main.isay') }}" title="杂谈">杂谈</a></li>
                         <li><a href="{{ url_for('main.music') }}" title="音乐">音乐</a></li>
                         <li><a href="{{ url_for('main.about') }}" title="关于">关于</a></li>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{ url_for('auth.logout') }}" title="退出">退出</a></li>
+                        {% else %}
+                            <li><a href="{{ url_for('auth.login') }}" title="登录">登录</a></li>
+                        {% endif %}
                     </ul>
                 </div>
 			</div>

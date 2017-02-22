@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 from flask import render_template
 
@@ -13,7 +14,8 @@ def index():
 
 @main.route('/tech')
 def tech():
-    return 'tech'
+    user = User.query.filter_by(email='test@gmail.com').first()
+    return user.username
 
 
 @main.route('/isay')
