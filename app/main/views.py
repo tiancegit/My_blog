@@ -14,7 +14,7 @@ def index():
 
 @main.route('/tech')
 def tech():
-    user = User.query.filter_by(email='test@gmail.com').first()
+    user = User.query.filter_by(email='tiance.1984@gmail.com').first()
     return user.username
 
 

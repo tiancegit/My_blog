@@ -7,7 +7,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     # 基类 Config中包含通用配置，子类分别专用的配置。如果需要。可以添加其他的配置类。
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'My_bolg'
-    SQLALCHEMY_COMMIT_ON_TEARDOWM = True
+    SQLALCHEMY_COMMIT_ON_TEARDOWN = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
 
     @staticmethod
     def init_app(app):
@@ -20,6 +21,10 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     # 配置bootstrap是否使用本地的文件。
     BOOTSTRAP_SERVE_LOCAL = True
+
+    MY_BLOG_SUBJECT_PREFIX = '[宁缺の博客]'
+    MY_BLOG_MAIL_SENDER = 'My_Blog Admin <tiance.1984@gmail.com>'
+
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = '587'
     MAIL_USE_TLS = True  # SMTP 服务器好像只需要TLS协议

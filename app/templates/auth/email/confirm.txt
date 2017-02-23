@@ -1,0 +1,11 @@
+你好~ {{ user.username }},
+
+欢迎来到宁缺の博客!
+
+要确认您的帐户，请点击以下链接：
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+My_Blog
+
+注意:本邮件地址仅用于通知邮件发送，不可回复。
