@@ -51,6 +51,25 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    def generate_reset_token(self, expiration=3600):
+        # 找回密码时生成的令牌, 失效时间一小时.
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'reset': self.id})
+
+    def reset_password(self, token, new_password):
+        # 找回密码,验证令牌
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token)
+        except:
+            return False
+        if data.get('reset') != self.id:
+            return False
+        self.password = new_password
+        db.session.add(self)
+        return True
+
+
 @login_manage.user_loader
 def load_user(user_id):
     # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None

@@ -18,8 +18,8 @@ class RegistrationForm(FlaskForm):
     email = StringField(u'邮箱', validators=[Required(), length(1, 64), Email()])
     username = StringField(u'用户名', validators=[Required(), length(1, 64),
                                                Regexp('^[A-Za-z\u4e00-\u9fa5][A-Za-z0-9\u4e00-\u9fa5._]*$', 0,
-                                                      '用户名必须以中文或字母开头,只能包含中文，字母，数字，点或下划线')])
-    password = PasswordField(u'密码', validators=[Required(), EqualTo('password2', message='两次输入的密码不一致')])
+                                                      u'用户名必须以中文或字母开头,只能包含中文，字母，数字，点或下划线')])
+    password = PasswordField(u'密码', validators=[Required(), EqualTo('password2', message=u'两次输入的密码不一致')])
     password2 = PasswordField(u'确认密码', validators=[Required()])
     submit = SubmitField(u'注册')
 
@@ -30,3 +30,17 @@ class RegistrationForm(FlaskForm):
     def Validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError(u'用户名已经被占用,请更换用户名.')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField(u'旧密码', validators=[Required()])
+    password = PasswordField(u'新密码',  validators=[Required(), EqualTo('password2', message=u'两次密码输入不一致')])
+    password2 = PasswordField(u'确认新密码', validators=[Required()])
+    submit = SubmitField(u'修改密码')
+
+
+class PasswordRestRequestForm(FlaskForm):
+    email = StringField(u'注册邮箱', validators=[Required(), length(1, 64), Email()])
+    submit = SubmitField(u'找回密码')
+
+
