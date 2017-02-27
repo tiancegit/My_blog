@@ -11,9 +11,12 @@ bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
 mail = Mail()
-login_manage = LoginManager()
-login_manage.session_protection = 'strong'  # 设置Flask_Login的安全等级
-login_manage.login_view = 'auth.login'  # 设置登录页面的端点,用户未登录访问就跳回这里用于登录.
+login_manager = LoginManager()
+login_manager.session_protection = 'strong'  # 设置Flask_Login的安全等级
+login_manager.login_view = 'auth.login'  # 设置登录页面的端点,用户未登录访问就跳回这里用于登录.
+# 设置login_required 闪现的消息, 以及消息的分类.
+login_manager.login_message = u"请登录访问该页面."
+login_manager.login_message_category = 'info'
 
 
 def create_app(config_name):
@@ -25,7 +28,7 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     mail.init_app(app)
-    login_manage.init_app(app)
+    login_manager.init_app(app)
 
     # 附加路由和自定义的错误页面。
     from .main import main as main_blueprint

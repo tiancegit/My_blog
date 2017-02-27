@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from . import db
-from . import login_manage
+from . import login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -70,7 +70,7 @@ class User(UserMixin, db.Model):
         return True
 
 
-@login_manage.user_loader
+@login_manager.user_loader
 def load_user(user_id):
     # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None
     return User.query.get(int(user_id))

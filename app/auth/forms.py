@@ -44,3 +44,13 @@ class PasswordRestRequestForm(FlaskForm):
     submit = SubmitField(u'找回密码')
 
 
+class PasswordRestForm(FlaskForm):
+    email = StringField(u'邮箱', validators=[Required(), length(1, 64), Email()])
+    password = PasswordField(u'新密码', validators=[Required(), EqualTo('password2', message=u'两次密码输入不一致!')])
+    password2 = PasswordField(u'确认新密码', validators=[Required()])
+    submit = SubmitField(u'修改密码')
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first() is None:
+            raise ValidationError(u'邮箱地址错误')
+
