@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, ValidationError
 from wtforms.validators import Required, length, Email, EqualTo, Regexp
-from wtforms import ValidationError
 from ..moudle import User
 
 

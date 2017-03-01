@@ -5,7 +5,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
-
+from datetime import datetime
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -74,3 +75,12 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None
     return User.query.get(int(user_id))
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64))
+    body = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
