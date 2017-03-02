@@ -5,27 +5,19 @@ from flask_login import login_required
 from .forms import PostForm
 from . import main
 from ..moudle import User, Post, db
+import markdown
 
 
 @main.route('/')
 def index():
-    return render_template('index.html')
-
-# mkd = '''
-'''
-# header
-## header2
-[picture](http://www.example.com)
-* 1
-* 2
-* 3
-**bold**
-'''
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
+    return render_template('index.html', posts=posts)
 
 
-@main.route('/writer')
+@main.route('/writer', methods=['GET', 'POST'])
 @login_required
 def writer():
+    # 编写文章的路由
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
@@ -33,7 +25,13 @@ def writer():
         db.session.add(post)
         flash(u'文章已保存.', 'success')
         return redirect(url_for('main.index'))
-    return render_template('writertest.html', form=form)
+    return render_template('writertest.html', form=form, markdown=markdown)
+
+
+@main.route('/upload/', methods=['POST'])
+def upload():
+    pass
+
 
 
 @main.route('/tech')

@@ -24,21 +24,21 @@
 {% block title %}My_blog{% endblock %}
 
 {% block body %}
-    	<header>
-		<div class="navbar navbar-fixed-top navbar-inverse" style="box-shadow:0px 3px 30px #002;-moz-box-shadow:0px 3px 30px #002;-webkit-box-shadow:0px 3px 30px #002;">
-			<div class="container">
+    <header>
+        <div class="navbar navbar-fixed-top navbar-inverse" style="box-shadow:0px 3px 30px #002;-moz-box-shadow:0px 3px 30px #002;-webkit-box-shadow:0px 3px 30px #002;">
+            <div class="container">
                 <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" id="logo" href="{{ url_for('main.index') }}">宁缺の博客</a>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" id="logo" href="{{ url_for('main.index') }}">宁缺の博客</a>
                 </div>
-				<div class="navbar-collapse collapse navbar-responsive-collapse">
-				    <ul class="nav navbar-nav">
-				    	<li class="active"><a href="{{ url_for('main.index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
+                <div class="navbar-collapse collapse navbar-responsive-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="{{ url_for('main.index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
                         <li><a href="{{ url_for('main.tech') }}" title="技术">技术</a></li>
                         <li><a href="{{ url_for('main.isay') }}" title="杂谈">杂谈</a></li>
                         <li><a href="{{ url_for('main.music') }}" title="音乐">音乐</a></li>
@@ -56,37 +56,37 @@
                         </ul>
                     {% endif %}
                 </div>
-			</div>
-		</div>
-	</header>
+            </div>
+        </div>
+    </header>
 
-{% block content %}
-    <div class="container">
-    {% for message in get_flashed_messages(with_categories=True) %}
-    <br />
-    <br />
-    <br />
-    <div class="alert alert-{{ message[0] }}">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message[1] }}
-    </div>
-    {% endfor %}
-    {% block page_content %}{% endblock %}
-    </div>
-{% endblock %}
+    {% block content %}
+        <div class="container">
+            {% for message in get_flashed_messages(with_categories=True) %}
+                <br />
+                <br />
+                <br />
+                <div class="alert alert-{{ message[0] }}">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    {{ message[1] }}
+                </div>
+            {% endfor %}
+            {% block page_content %}{% endblock %}
+        </div>
+    {% endblock %}
 
-{% block scripts %}
-{{ super() }}
-{#    <script src="https://xlzd.me/usr/themes/material/js/snow-v3.jquery.js"></script>#}
-    <script src="{{ url_for('static', filename='js/material.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/ripples.min.js') }}"></script>
-    <script>
-      $.material.init();
-    </script>
-    {#  本地化日期和时间  #}
-    {{ moment.include_moment() }}
-    {# 时间戳的语言本地化 #}
-    {{ moment.lang('zh_cn') }}
-{% endblock %}
+    {% block scripts %}
+        {{ super() }}
+        {#    <script src="https://xlzd.me/usr/themes/material/js/snow-v3.jquery.js"></script>#}
+        <script src="{{ url_for('static', filename='js/material.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/ripples.min.js') }}"></script>
+        <script>
+            $.material.init();
+        </script>
+        {#  本地化日期和时间  #}
+        {{ moment.include_moment() }}
+        {# 时间戳的语言本地化 #}
+        {{ moment.lang('zh_cn') }}
+    {% endblock %}
 
 {% endblock %}

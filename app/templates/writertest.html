@@ -3,54 +3,57 @@
 
 {% block head %}
     {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
 {% endblock %}
 
 {% block title %}宁缺のblog{% endblock %}
 
+
+<div class="form-group  required"><label class="control-label" for="email">邮箱</label>
+
+          <input class="form-control" id="email" name="email" required type="text" value="">
+
+  </div>
+
+
 {% block page_content %}
     <br />
     <br />
-    <br />
-     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
+
     <div class="row">
         <h1 class="text-center">Edit Post</h1>
-        <form method="post" action="{{ url_for('.writer') }}">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.title.label }}
-                {% if form.title.errors %}
-                    {% for e in form.title.errors %}
-                        <p class="help-block">{{ e }}</p>
-                    {% endfor %}
-                {% endif %}
-                {{ form.title(class_='form-control') }}
+        <form method="post">
+            <div class="form-group  required"><label class="control-label" for="title">标题</label>
+            {{ form.title(class_='form-control') }}
             </div>
-
-            <div class="form-group">
-                <div id="editormd" class="form-control">
-                    {{ form.body(style="display:none;") }}
-                </div>
+            {{form.hidden_tag()}}
+            <div id="test-editormd" class="form-control">
+                {{form.body(class="form-control",style="display:none;",id="ts")}}
             </div>
-            <input class="btn btn-primary" type="submit" value="Edit">
+            <button type="submit" class="btn btn-primary form-control">提交</button>
         </form>
     </div>
 {% endblock %}
 
 {% block scripts %}
-{{ super() }}
-<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
-<script type="text/javascript">
-    var testEditor;
+    {{ super() }}
 
-    $(function () {
-        testEditor = editormd("test-editormd", {
-            width: "100%",
-            height: 640,
-            syncScrolling: "single",
-            path: "{{ url_for('static',filename='editormd/lib/') }}"
-        });
-    });
-</script>
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+        var testEditor;
+        $(function(){
+            testEditor=editormd("test-editormd",{
+                width:"100%",
+                height:680,
+                syncScrolling : "single",
+                path:"{{url_for('static',filename='editormd/lib/')}}",
+                //启动本地图片上传功能
+                imageUpload:true,
+                imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL : "{{url_for('main.upload')}}",
+                emoji:true
+            });
+        })
+    </script>
 {% endblock %}
+

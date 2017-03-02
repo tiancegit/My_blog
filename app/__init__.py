@@ -6,13 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 from config import config
 from flask_login import LoginManager
 from flask_mail import Mail
-from flask_markdown import MarkDown
+from flask_markdown import markdown
+
 
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
 mail = Mail()
-markdown = MarkDown()
+# markdown = MarkDown()
+markdown(app=Flask(__name__))
 login_manager = LoginManager()
 login_manager.session_protection = 'strong'  # 设置Flask_Login的安全等级
 login_manager.login_view = 'auth.login'  # 设置登录页面的端点,用户未登录访问就跳回这里用于登录.
@@ -30,7 +32,7 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     mail.init_app(app)
-    markdown.init_app(app)
+    # markdown.init_app(app)
     login_manager.init_app(app)
 
     # 附加路由和自定义的错误页面。
