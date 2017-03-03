@@ -6,6 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from datetime import datetime
+from markdown import markdown
+import bleach
+
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -84,3 +87,23 @@ class Post(db.Model):
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    body_html = db.Column(db.Text)
+
+    # 处理body字段变化的函数
+    @staticmethod
+    def on_changed_post(target, value, oldvalue, initiator):
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'pre',
+                        'em', 'i', 'li', 'ol', 'code', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p', 'img']
+        target.body_html = bleach.linkify(bleach.clean(
+            markdown(value, output_from='html'),
+            tags=allowed_tags, strip=True,
+            attributes={
+                '*': ['class'],
+                'a': ['href', 'rel'],
+                'img': ['src', 'alt']
+            }
+        ))
+
+# 注册监听事件. 当body字段发生变化时,触发函数,完成对应的html_body字段的更新.
+db.event.listen(Post.body, 'set', Post.on_changed_post)

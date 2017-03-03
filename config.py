@@ -9,6 +9,9 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'My_bolg'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SAVEPIC = basedir + '/image'
+    # 首页文章每页显示的页数
+    BLOG_POSTS_PER_PAGE = 10
 
     @staticmethod
     def init_app(app):

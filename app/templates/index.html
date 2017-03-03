@@ -1,6 +1,14 @@
 {% extends 'base.html' %}
+{% import '_macros.html' as macros %}
 
 {% block title %}宁缺のblog{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/highlight.css') }}"/>
+    <script src="{{ url_for('static',filename='js/highlight.js') }}"></script>
+{% endblock %}
+
 
 {% block page_content %}
     <br />
@@ -15,12 +23,13 @@
                             <h3 class="post-title"><a href="#">{{ post.title }}</a></h3>
                         </div>
                         <div class="post-meta">
-                            <span>作者：<a href="url_for('main.index')" target="_blank">宁缺</a> | </span>
-                            <span>分类：<a href="url_for('main.tech')">技术</a> | </span>
+                            <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
+                            <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
                             <span>评论：<a href="#">1 评论</a> </span>
                         </div>
                         <div class="post-content">
-                            {{ post.body|markdown|safe }}
+                            {{ post.body_html | safe }}
+                            {{ post.body | safe }}
                             <p class="more"><a href="#" title="{{ post.title }}">阅读全文...</a></p>
                         </div>
                     </div>
@@ -28,4 +37,9 @@
             </div>
         </div>
     </div>
+    {% if pagination %}
+        <div class="pagination">
+        {{ macros.pagination_widget(pagination, '.index') }}
+        </div>
+    {% endif %} 
 {% endblock %}
