@@ -30,6 +30,7 @@
                         </div>
                         <div class="post-content">
                             {{ post.body_html | safe }}
+
                             <p class="more"><a href="#" title="{{ post.title }}">阅读全文...</a></p>
                         </div>
                     </div>
@@ -39,7 +40,7 @@
     </div>
     {% if pagination %}
         <div class="pagination">
-        {{ macros.pagination_widget(pagination, '.index') }}
+        {{ macros.pagination_widget(pagination, '.test', year=year,mouth=mouth, day=day) }}
         </div>
-    {% endif %} 
+    {% endif %}
 {% endblock %}

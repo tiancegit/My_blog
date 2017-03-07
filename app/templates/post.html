@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+
+{% block title %}宁缺のblog{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/highlight.css') }}"/>
+    <script src="{{ url_for('static',filename='js/highlight.js') }}"></script>
+{% endblock %}
+
+
+{% block page_content %}
+    <br />
+    <br />
+    <br />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <h3 class="post-title"><a href="#">{{ post.title }}</a></h3>
+                    </div>
+                    <div class="post-meta">
+                        <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
+                        <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
+                        <span>时间：{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} | </span>
+                        <span>评论：<a href="#">1 评论</a> </span>
+                    </div>
+                    <div class="post-content">
+                        {{ post.body_html | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
