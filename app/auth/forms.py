@@ -26,7 +26,7 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(email=field.data).first():
             raise ValidationError(u'邮箱已经被注册,更换邮箱或者找回密码.')
 
-    def Validate_username(self, field):
+    def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError(u'用户名已经被占用,请更换用户名.')
 

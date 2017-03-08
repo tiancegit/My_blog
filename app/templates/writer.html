@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block head %}
     {{ super() }}
@@ -11,9 +11,9 @@
 
 <div class="form-group  required"><label class="control-label" for="email">邮箱</label>
 
-          <input class="form-control" id="email" name="email" required type="text" value="">
+    <input class="form-control" id="email" name="email" required type="text" value="">
 
-  </div>
+</div>
 
 
 {% block page_content %}
@@ -24,7 +24,13 @@
         <h1 class="text-center">Edit Post</h1>
         <form method="post">
             <div class="form-group  required"><label class="control-label" for="title">标题</label>
-            {{ form.title(class_='form-control') }}
+                {{ form.title(class_='form-control') }}
+            </div>
+            <div class="form-group  required"><label class="control-label" for="title">英文短标题</label>
+                {{ form.short_title(class_='form-control') }}
+                {% for error in form.short_title.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                {% endfor %}
             </div>
             {{form.hidden_tag()}}
             <div id="test-editormd" class="form-control">

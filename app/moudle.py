@@ -84,6 +84,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
+    short_title = db.Column(db.String(64), unique=True, index=True)
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -94,7 +95,7 @@ class Post(db.Model):
     def on_changed_post(target, value, oldvalue, initiator):
         allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'pre',
                         'em', 'i', 'li', 'ol', 'code', 'strong', 'ul',
-                        'h1', 'h2', 'h3', 'p', 'img']
+                        'h1', 'h2', 'h3', 'p', 'img', 'hr']
         target.body_html = bleach.linkify(bleach.clean(
             markdown(value, output_from='html'),
             tags=allowed_tags, strip=True,

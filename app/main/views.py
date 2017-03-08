@@ -26,7 +26,8 @@ def writer():
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data,
-                    body=form.body.data)
+                    body=form.body.data,
+                    short_title=form.short_title.data)
         db.session.add(post)
         flash(u'文章已保存.', 'success')
         return redirect(url_for('main.index'))
@@ -61,24 +62,6 @@ def image(name):
     return resp
 
 
-# @main.route('/<int:year>/')
-# @main.route('/<int:year>/<int:mouth>/')
-# @main.route('/<int:year>/<int:mouth>/<int:day>/')
-# @main.route('/<int:year>/<int:mouth>/<int:day>/<title>')
-# def test(year, mouth=None, day=None, title=None):
-#     if year != None and mouth is None and day is None and title is None:
-#         now_year = '%s-00-00 00:00:00.000000' % str(year)
-#         next_year = '%s-00-00 00:00:00.000000' % str(year + 1)
-# #       posts = db.session.query(Post).filter(Post.timestamp.between(now_year, next_year)).order_by(Post.timestamp.desc()).all()
-#         page = request.args.get('page', type=int)
-#         pagination = db.session.query(Post).filter(Post.timestamp.between(now_year, next_year)).order_by(Post.timestamp.desc()).paginate(
-#             page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
-#             error_out=False)
-#         posts = pagination.items
-#         return render_template('test.html', posts=posts, pagination=pagination)
-#     else:
-#         return '404'
-
 def check_post(start, end):
     # 判断时间段的是否有文章的函数.start是开始时间,end是结束时间
     posts = Post.query.filter(Post.timestamp.between(start, end)).first()
@@ -94,37 +77,42 @@ def check_post(start, end):
     return pagination, posts
 
 
+@main.route('/<int:year>/<int:month>/<int:day>/<short_title>')
+def post(year, month, day, short_title):
+    if year is not None and month is not None and day is not None and short_title is not None:
+        # 路由 /2017/02/04/Python
+        post = Post.query.filter_by(short_title=short_title).first()
+        if post is None:
+            # 尝试性查询文章,若为空值,则返回404
+            return 'a'
+        start_time = '{year}-{month:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, month=month, day=day)
+        end_time = '{year}-{month:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, month=month, day=day)
+        post = Post.query.filter(Post.timestamp.between(start_time, end_time)).filter_by(short_title=short_title).first()
+        return render_template('post.html', post=post)
+
+
+
+
 @main.route('/<int:year>/')
-@main.route('/<int:year>/<int:mouth>/')
-@main.route('/<int:year>/<int:mouth>/<int:day>/')
-@main.route('/<int:year>/<int:mouth>/<int:day>/<title>')
-def test(year, mouth=None, day=None, title=None):
-    if year is not None and mouth is None and day is None and title is None:
+@main.route('/<int:year>/<int:month>/')
+@main.route('/<int:year>/<int:month>/<int:day>/')
+def post_all(year, month=None, day=None):
+    if year is not None and month is None and day is None:
         # 路由/2017
         start_time = '{year}-00-00 00:00:00.000000'.format(year=year)
         end_time = '{year}-00-01 00:00:00.000000'.format(year=year+1)
         pagination, posts = check_post(start_time, end_time)
-    elif year is not None and mouth is not None and day is None and title is None:
+    elif year is not None and month is not None and day is None:
         # 路由 /2017/03
-        start_time = '{year}-{mouth:0>2d}-00 00:00:00.000000'.format(year=year, mouth=mouth)
-        end_time = '{year}-{mouth:0>2d}-00 23:59:59.000000'.format(year=year, mouth=mouth+1)
+        start_time = '{year}-{month:0>2d}-00 00:00:00.000000'.format(year=year, month=month)
+        end_time = '{year}-{month:0>2d}-00 23:59:59.000000'.format(year=year, month=month+1)
         pagination, posts = check_post(start_time, end_time)
-    elif year is not None and mouth is not None and day is not None and title is None:
+    elif year is not None and month is not None and day is not None:
         # 路由 /2017/03/04
-        start_time = '{year}-{mouth:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, mouth=mouth, day=day)
-        end_time = '{year}-{mouth:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, mouth=mouth, day=day)
+        start_time = '{year}-{month:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, month=month, day=day)
+        end_time = '{year}-{month:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, month=month, day=day)
         pagination, posts = check_post(start_time, end_time)
-    elif year is not None and mouth is not None and day is not None and title is not None:
-        # 路由 /2017/02/04/Python
-        posts = Post.query.filter_by(title=title).first()
-        if posts is None:
-            # 尝试性查询文章,若为空值,则返回404
-            abort(404)
-        start_time = '{year}-{mouth:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, mouth=mouth, day=day)
-        end_time = '{year}-{mouth:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, mouth=mouth, day=day)
-        post = Post.query.filter(Post.timestamp.between(start_time, end_time)).filter_by(title=title).first()
-        return render_template('post.html', post=post)
-    return render_template('post-all.html', posts=posts, pagination=pagination, year=year, mouth=mouth, day=day, title=title)
+    return render_template('post-all.html', posts=posts, pagination=pagination, year=year, month=month, day=day)
 
 
 @main.route('/tech')
@@ -145,11 +133,6 @@ def music():
 @main.route('/about')
 def about():
     return render_template('about.html', current_time=datetime.utcnow())
-
-
-@main.route('/post/')
-def post():
-    pass
 
 
 @main.route('/post_reproduced')
