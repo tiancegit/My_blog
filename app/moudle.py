@@ -84,7 +84,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
-    short_title = db.Column(db.String(64), unique=True, index=True)
+    short_title = db.Column(db.String(64))
     body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -108,3 +108,15 @@ class Post(db.Model):
 
 # 注册监听事件. 当body字段发生变化时,触发函数,完成对应的html_body字段的更新.
 db.event.listen(Post.body, 'set', Post.on_changed_post)
+
+
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    author_name = db.Column(db.String(64))
+    author_email = db.Column(db.String(64))
+    avatar_hash = db.Column(db.String(32))

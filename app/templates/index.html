@@ -29,8 +29,11 @@
                             <span>评论：<a href="#">1 评论</a> </span>
                         </div>
                         <div class="post-content">
-                            {{ post.body_html | safe }}
+                            {{ post.body_html | split_body_html | safe }}
                             <p class="more"><a href="{{ url_for('main.post', year=post.timestamp.year | int, month=post.timestamp.month | int, day=post.timestamp.day | int, short_title=post.short_title) }}" title="{{ post.title }}">阅读全文...</a></p>
+                            {% if current_user.is_authenticated %}
+                            <p class="more"><a href="{{ url_for('main.edit', short_title=post.short_title) }}">编辑文章</a></p>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
