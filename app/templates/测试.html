@@ -1,0 +1,503 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta name="google-site-verification" content="wRTsQbQJP49HbdD4B--2EAK4PDk5ifuapS8JeUh-Fdc" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Python 中的对象概述 - xlzd杂谈</title>
+    <link rel="Shortcut Icon" href="http://7xkpi6.com1.z0.glb.clouddn.com/avatar.png" />
+    <link rel="Bootmark" href="http://7xkpi6.com1.z0.glb.clouddn.com/avatar.png" />
+    <meta name="description" content="在 Python 的世界中，一切皆对象。 int / list / dict / ... 都是对象，除此之外，函数、类本身也是对象，那么，这些对象究竟是什么呢？从结果看，Python 中的对象是..." />
+    <meta name="keywords" content="Python" />
+    <meta name="generator" content="Typecho 1.0/14.10.10" />
+    <meta name="template" content="material" />
+    <link rel="pingback" href="https://xlzd.me/action/xmlrpc" />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://xlzd.me/action/xmlrpc?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://xlzd.me/action/xmlrpc?wlw" />
+    <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://xlzd.me/feed/2016/07/09/object-in-py" />
+    <link rel="alternate" type="application/rdf+xml" title="RSS 1.0" href="https://xlzd.me/feed/rss/2016/07/09/object-in-py" />
+    <link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="https://xlzd.me/feed/atom/2016/07/09/object-in-py" />
+    <script type="text/javascript">
+        (function () {
+            window.TypechoComment = {
+                dom : function (id) {
+                    return document.getElementById(id);
+                },
+
+                create : function (tag, attr) {
+                    var el = document.createElement(tag);
+
+                    for (var key in attr) {
+                        el.setAttribute(key, attr[key]);
+                    }
+
+                    return el;
+                },
+
+                reply : function (cid, coid) {
+                    var comment = this.dom(cid), parent = comment.parentNode,
+                            response = this.dom('respond-post-224'), input = this.dom('comment-parent'),
+                            form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                            textarea = response.getElementsByTagName('textarea')[0];
+
+                    if (null == input) {
+                        input = this.create('input', {
+                            'type' : 'hidden',
+                            'name' : 'parent',
+                            'id'   : 'comment-parent'
+                        });
+
+                        form.appendChild(input);
+                    }
+
+                    input.setAttribute('value', coid);
+
+                    if (null == this.dom('comment-form-place-holder')) {
+                        var holder = this.create('div', {
+                            'id' : 'comment-form-place-holder'
+                        });
+
+                        response.parentNode.insertBefore(holder, response);
+                    }
+
+                    comment.appendChild(response);
+                    this.dom('cancel-comment-reply-link').style.display = '';
+
+                    if (null != textarea && 'text' == textarea.name) {
+                        textarea.focus();
+                    }
+
+                    return false;
+                },
+
+                cancelReply : function () {
+                    var response = this.dom('respond-post-224'),
+                            holder = this.dom('comment-form-place-holder'), input = this.dom('comment-parent');
+
+                    if (null != input) {
+                        input.parentNode.removeChild(input);
+                    }
+
+                    if (null == holder) {
+                        return true;
+                    }
+
+                    this.dom('cancel-comment-reply-link').style.display = 'none';
+                    holder.parentNode.insertBefore(response, holder);
+                    return false;
+                }
+            };
+        })();
+    </script>
+    <script type="text/javascript">
+        (function () {
+            var event = document.addEventListener ? {
+                add: 'addEventListener',
+                focus: 'focus',
+                load: 'DOMContentLoaded'
+            } : {
+                add: 'attachEvent',
+                focus: 'onfocus',
+                load: 'onload'
+            };
+
+            document[event.add](event.load, function () {
+                var r = document.getElementById('respond-post-224');
+
+                if (null != r) {
+                    var forms = r.getElementsByTagName('form');
+                    if (forms.length > 0) {
+                        var f = forms[0], textarea = f.getElementsByTagName('textarea')[0], added = false;
+
+                        if (null != textarea && 'text' == textarea.name) {
+                            textarea[event.add](event.focus, function () {
+                                if (!added) {
+                                    var input = document.createElement('input');
+                                    input.type = 'hidden';
+                                    input.name = '_';
+                                    input.value = (function () {
+                                        var _F00z = ''///*'E0'*/'E0'
+                                                +//'Z'
+                                                'cfa'+//'wnx'
+                                                'b'+'7f'//'L'
+                                                +'f03'//'M'
+                                                +//'dQs'
+                                                '9'+//'uQ'
+                                                'uQ'+//'tmF'
+                                                '9'+''///*'XGy'*/'XGy'
+                                                +'0ad'//'Os'
+                                                +'e0e'//'84'
+                                                +'b'//'CLc'
+                                                +//'F'
+                                                '933'+'d'//'o41'
+                                                +'5f'//'Eq'
+                                                +//'UWk'
+                                                '6'+//'E'
+                                                '1'+'a'//'g'
+                                                +'2'//'X'
+                                                +//'MD'
+                                                '53f'+//'1p'
+                                                '2', _MKm9S = [[10,12]];
+
+                                        for (var i = 0; i < _MKm9S.length; i ++) {
+                                            _F00z = _F00z.substring(0, _MKm9S[i][0]) + _F00z.substring(_MKm9S[i][1]);
+                                        }
+
+                                        return _F00z;
+                                    })();
+
+                                    f.appendChild(input);
+                                    added = true;
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+        })();
+    </script>        <link rel="stylesheet" href="https://xlzd.me/usr/themes/material/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://xlzd.me/usr/themes/material/css/material.min.css">
+    <link rel="stylesheet" href="https://xlzd.me/usr/themes/material/css/ripples.min.css">
+    <link rel="stylesheet" href="https://xlzd.me/usr/themes/material/css/roboto.min.css">
+    <link rel="stylesheet" href="https://xlzd.me/usr/themes/material/css/customs.css">
+    <link rel="icon" href="http://7xkpi6.com1.z0.glb.clouddn.com/avatar.png" />
+    <script>
+        if(-1 != window.location.href.indexOf('php')){
+            window.location.href='http://xlzd.me/404'
+        }
+    </script>
+
+
+</head>
+<body>
+<header>
+    <div class="navbar navbar-fixed-top navbar-inverse" style="box-shadow:0px 3px 30px #002;-moz-box-shadow:0px 3px 30px #002;-webkit-box-shadow:0px 3px 30px #002;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" id="logo" href="https://xlzd.me/">xlzd杂谈</a>
+            </div>
+            <div class="navbar-collapse collapse navbar-responsive-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="https://xlzd.me/"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span> xlzd杂谈</a></li>
+
+                    <li><a href="https://xlzd.me/category/tech/" title="技术">技术</a></li>
+                    <li><a href="https://xlzd.me/category/isay/" title="杂谈">杂谈</a></li>
+
+                    <li><a href="https://xlzd.me/music" title="音乐">音乐</a></li>
+                    <li><a href="https://xlzd.me/about" title="关于">关于</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container" id="main">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3 class="post-title"><a href="https://xlzd.me/2016/07/09/object-in-py" target="_blank">Python 中的对象概述</a></h3>
+                    {# 文章时间作者部分 #}
+                    <div class="post-meta">
+                        <span>作者：<a href="http://xlzd.me" target="_blank">xlzd</a> | </span>
+                        <!-- <span>作者：<a href="https://xlzd.me/author/1/">xlzd</a> | </span> -->
+                        <span>时间：2016-07-09 01:08:00 | </span>
+                        <span>分类：<a href="https://xlzd.me/category/tech/">技术</a> | </span>
+                        <span>评论：<a href="https://xlzd.me/2016/07/09/object-in-py">0 评论</a> </span>
+                    </div>
+                    {# 文章内容部分 #}
+                    <div class="post-content"><p>在 Python 的世界中，一切皆对象。 int / list / dict / ... 都是对象，除此之外，函数、类本身也是对象，那么，这些对象究竟是什么呢？</p>
+                        <p>从结果看，Python 中的对象是 C 语言中结构体在堆上申请的一片内存区域。而在具体实现上，这里先简单描述一下。<br />
+                            <img src="http://7xkpi6.com1.z0.glb.clouddn.com/blog/2016/07/09/987200237.png" alt="屏幕快照 2016-07-09 01.16.10.png" /></p>
+                        <!--more-->
+                        <hr />
+                        <h2>万物基于 MIUI： PyObject</h2>
+                        <p>在 Python 中，所有对象都共有一些特性，这些特性定义在 <code>PyObject</code> 中。<code>PyObject</code> 定义在 <code>Include/object.h</code> 中：</p>
+                        <pre><code class="language-C">#define PyObject_HEAD                   \
+    _PyObject_HEAD_EXTRA                \
+    Py_ssize_t ob_refcnt;               \
+    struct _typeobject *ob_type;
+
+typedef struct _object {
+    PyObject_HEAD
+} PyObject;
+</code></pre>
+                        <p>简化后即为：</p>
+                        <pre><code class="language-C">typedef struct _object {
+    int ob_refcnt;
+    struct _typeobject *ob_type;
+} PyObject;
+</code></pre>
+                        <p>在 PyObject 中，<code>ob_refcnt</code> 用以记录对象的引用数（与引用计数的内存回收相关，这里暂且不表），当有新的指针指向某对象时，<code>ob_refcnt</code> 的值加 1， 当指向某对象的指针删除时，<code>ob_refcnt</code> 的值减 1，当其值为零的时候，则可以将该对象从堆中删除（事实上并不会立即删除，这里暂且不表）。除了 <code>ob_refcnt</code> 之外，还有一个 指向 <code>_typeobject</code> 指针 <code>ob_type</code>。这个结构体用于表示对象类型。跳过 <code>_typeobject</code>，可以发现， Python 对象的核心在于一个引用计数和一个类型信息。</p>
+                        <p><code>PyObject</code> 定义的内容会出现在每个对象所占内存的开始部分。</p>
+                        <hr />
+                        <h2>定长对象与变长对象</h2>
+                        <p>在 Python 中，除了 <code>bool</code> <code>float</code> 这样的定长对象（一旦确定下来需要的内存，便不再有改动），还有另外一种对象：长度可变的对象。这种对象在 Python 的实现中通过 <code>PyVarObject</code> 结构体来表示：</p>
+                        <pre><code>#define PyObject_VAR_HEAD               \
+    PyObject_HEAD                       \
+    Py_ssize_t ob_size; /* Number of items in variable part */
+
+typedef struct {
+    PyObject_VAR_HEAD
+} PyVarObject;
+</code></pre>
+                        <p>事实上，就是在 <code>PyObject</code> 的基础上，多了一个 <code>ob_size</code> 变量，用以标识对象的长度（<strong>是长度，不是内存占用</strong>）。也就是说，其实 <code>PyVarObject</code> 就是 <code>PyObject</code> 的一个拓展，于是，<strong>在 Python 中，所有的对象都可以通过 <code>PyObject *</code> 指针来引用</strong>，这一点非常重要，它使得很多操作变得统一（这篇博客暂不详述）。</p>
+                        <p>由此，Python 中所有对象在实现的时候，内存无非如下两种情况：</p>
+                        <pre><code>   定长对象              变长对象
++-----------+       +-----------+
+| ob_refcnt |       | ob_refcnt |
++-----------+       +-----------+
+|  ob_type  |       |  ob_type  |
++-----------+       +-----------+
+|           |       |  ob_size  |
+|           |       +-----------+
+|   other   |       |           |
+|           |       |   other   |
+|           |       |           |
++-----------+       +-----------+
+</code></pre>
+                        <hr />
+                        <h2>道生一：PyTypeObject</h2>
+                        <p>在描述 <code>PyObject</code> 的时候，提到了一个 <code>_typeobject</code> 结构体。那么，它是干什么的呢？想象一下，一个对象在创建的时候需要多少内存、这个对象的类名是什么等等信息，又是如何记录和区分的呢？</p>
+                        <p><code>_typeobject</code>（也就是<code>PyTypeObject</code>）可以被称之为“指定对象类型的类型对象”，其定义如下：</p>
+                        <pre><code class="language-C">typedef struct _typeobject {
+    PyObject_VAR_HEAD
+    const char *tp_name; /* For printing, in format &quot;&lt;module&gt;.&lt;name&gt;&quot; */
+    Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
+
+    // ...... 省略部分暂时不关心的内容
+
+} PyTypeObject;
+</code></pre>
+                        <p>可以理解为，<code>PyTypeObject</code> 对象是 Python 中面向对象理念中“类”这个概念的实现，这里只是简单介绍其定义中的部分内容：</p>
+                        <ul>
+                            <li>ty_name：类型名</li>
+                            <li>tp_basicsize, tp_itemsize：创建类型对象时分配的内存大小信息</li>
+                            <li>被省略掉的部分：与该类型关联的操作（函数指针）</li>
+                        </ul>
+                        <p>这里只是简单描述，上面的内容有些偏颇，暂不必过分深究。</p>
+                        <p>再看一眼 <code>PyTypeObject</code> 的定义，可以发现在最开始也有一个 <code>PyObject_VAR_HEAD</code>，这意味着它也是一个对象。那么，<code>PyTypeObject</code> 既然是指示类型的对象，那么它的类型又是什么呢？答案是 <code>PyType_Type</code>：</p>
+                        <pre><code>PyTypeObject PyType_Type = {
+    PyVarObject_HEAD_INIT(&amp;PyType_Type, 0)
+    &quot;type&quot;,                                     /* tp_name */
+    sizeof(PyHeapTypeObject),                   /* tp_basicsize */
+    sizeof(PyMemberDef),                        /* tp_itemsize */
+    (destructor)type_dealloc,                   /* tp_dealloc */
+    // ...... 省略了部分内容
+};
+</code></pre>
+                        <p>事实上，它就是 Python 语言中的 <code>type</code> 对象就是 <code>PyType_Type</code>，它是所有 class 的 class，在 Python 中叫做 metaclass。其实，在实现中它的 <code>ob_type</code> 指针又指向了自己本身，既是：</p>
+                        <pre><code>   PyType_Type
++-----------+&lt;-------+
+| ob_refcnt |        |
++-----------+        |
+|  ob_size  +--------+
++-----------+
+|           |
+|   other   |
+|           |
++-----------+
+</code></pre>
+                        <hr />
+                        <h2>小结</h2>
+                        <p>简单概述了 Python 中的对象的最模糊的概念。</p>
+                    </div>
+                    <br>
+                    <hr>
+                    {# 知识协议部分 #}
+                    <div style="text-align:center;float:left;marin-right:10px">
+                        <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">
+                            <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/cn/88x31.png">
+                        </a>
+                        <br>
+                        本博客采用<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/"><b>BY-NC-SA</b></a>协议进行许可
+                    </div>
+                    {# 分享功能部分 #}
+                    <div class="bdsharebuttonbox" style="text-align:right;float:right;marin-right:10px">
+                        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div>
+                    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":[],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+                </div>
+            </div>
+            {# 标签范围 #}
+            <p class="tags">标签：<a href="https://xlzd.me/tag/Python/">Python</a></p>
+            <div class="row">
+                <div id="comments">
+
+                    {# 评论数量区 #}
+                    <div class="alert alert-info">
+                        <span id="commentCount">还不快抢沙发</span>
+                    </div>
+                    {# 评论区 #}
+                    <div id="respond-post-224" class="respond">
+                        <div class="respond panel panel-default">
+                            <div class="panel-body">
+                                <div class="cancel-comment-reply"></div>
+                                <h3 id="response">添加新评论</h3>
+                                <!-- 输入表单开始 -->
+                                <form method="post" action="https://xlzd.me/2016/07/09/object-in-py/comment" id="comment_form" class="form-horizontal">
+                                    <!-- 如果当前用户已经登录 -->
+
+                                    <div class="form-group">
+                                        <label for="author" class="col-sm-2 control-label required">昵称</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-control-wrapper">
+                                                <input type="text" name="author" class="form-control text empty" size="35" value="test" />
+                                                <span class="material-input"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mail" class="col-sm-2 control-label required">邮箱</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-control-wrapper">
+                                                <input type="email" name="mail" class="form-control text empty" size="35" value="test@gmail.com" />
+                                                <span class="material-input"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="url" class="col-sm-2 control-label required">网站</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-control-wrapper">
+                                                <input type="url" name="url" class="form-control text empty" size="35" value="https://xlze.me" placeholder="http://"/>
+                                                <span class="material-input"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="textarea" class="col-sm-2 control-label required">内容</label>
+                                        <div class="col-sm-9">
+                                            <div class="form-control-wrapper">
+                                                <textarea rows="5" cols="50" name="text" id="textarea" class="form-control textarea  empty" required=""></textarea>
+                                                <span class="material-input"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-5">
+                                            <button type="submit" id="submit" class="btn btn-success btn-raised submit">提交评论</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {#    右边各个栏目    #}
+        <div class="col-md-3">
+            {# 搜索框 #}
+            <form method="post" action="" class="panel-body">
+                <div class="input-group">
+                    <div class="form-control-wrapper">
+                        <input type="text" name="s" class="form-control floating-label" placeholder="搜索" size="32" />
+                    </div>
+                    <span class="input-group-btn">
+		    	<button class="btn btn-primary btn-fab btn-raised mdi-action-search" value="" id="search-btn" type="submit"></button>
+			</span>
+                </div>
+            </form>
+            {# 公众号二维码 #}
+            <div class="panel panel-info">
+                <a style="background-color: black" class="panel-heading" onclickr="$('.other_box').slideToggle()" href="javascript:;">
+                    <h3 class="panel-title"><b>微信公众号</b></h3>
+                </a>
+                <div class="other_box">
+
+                    <!-- <img alt="xlzd talk" style="width:100%" src="http://xlzd.me/usr/uploads/common/wechat.jpg">-->
+                    <img alt="xlzd talk" style="width:100%" src="https://xlzd.me/usr/uploads/common/xlzdtalk.jpg">
+                    <!--
+                    <div class="github-card" data-user="xlzd"></div>
+                    <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+                    -->
+                </div>
+            </div>
+            {# 最新文章 #}
+            <div class="panel panel-info">
+                <a class="panel-heading" onclick="$('.recent_posts_box').slideToggle()" href="javascript:;">
+                    <h3 class="panel-title">最新文章</h3>
+                </a>
+                <div class="recent_posts_box">
+                    <a href="https://xlzd.me/2016/11/19/xart" class="item">xart: generate art ascii texts. </a><a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf" class="item">Python 乱码指北：一行删掉根目录</a><a href="https://xlzd.me/2016/07/09/object-in-py" class="item">Python 中的对象概述</a><a href="https://xlzd.me/2016/07/08/compile-py" class="item">从源码编译 Python</a><a href="https://xlzd.me/2016/06/27/openvpn" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务</a><a href="https://xlzd.me/2016/05/31/longquansi" class="item">五月晦忆五月朔与老夏小事</a><a href="https://xlzd.me/2016/05/20/ellipsis" class="item">优雅的 Python 之 Ellipsis</a><a href="https://xlzd.me/2016/03/30/string-compress" class="item">一道关于字符串的面试题</a><a href="https://xlzd.me/2016/03/26/is-unique-char" class="item">如何确定一个字符串中是否所有字符全部互不相同</a><a href="https://xlzd.me/2016/03/14/sp-sort" class="item">几种无用但有趣的排序算法</a>	    </div>
+            </div>
+            {# 最新回复 #}
+            <div class="panel panel-info">
+                <a class="panel-heading" onclick="$('.comments_box').slideToggle()" href="javascript:;">
+                    <h3 class="panel-title">最新回复</h3>
+                </a>
+                <div class="comments_box">
+                    <a href="https://xlzd.me/2016/06/27/openvpn#pingback-173" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务 | AICloud: [...]原文：怎样在 Ubuntu 16.04 上安...</a>
+                    <a href="https://xlzd.me/2015/12/11/requests#comment-171" class="item">藏锋: 很好的爬虫知识，感谢博主的工作！！
+                    </a>
+                    <a href="https://xlzd.me/2016/03/05/sc-internet#comment-170" class="item">icybee: cool，当作职业规划的参考啦～
+                    </a>
+                    <a href="https://xlzd.me/2015/12/15/graph#comment-169" class="item">下载了软件无从下手的小朋友: 此刻是最好的连同着疑问都是最好的
+                    </a>
+                    <a href="https://xlzd.me/2016/06/27/openvpn#comment-168" class="item">下载了软件无从下手的小朋友: 您好呀～程序员小哥哥，可以录个视频么，好想试一试啊 可...</a>
+                    <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-167" class="item">loftnova: pool = set()
+                        for char in s:...</a>
+                    <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-166" class="item">Roll: len(set(string)) == len(str...</a>
+                    <a href="https://xlzd.me/2016/03/05/sc-internet#comment-165" class="item">xlzd: 其实不需要太多 JS 知识。
+                    </a>
+                    <a href="https://xlzd.me/2016/03/05/sc-internet#comment-164" class="item">再见蒲公英: 如果要学会这样的可视化，就得先学JS，对吗？
+                    </a>
+                    <a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf#comment-163" class="item">Rancho: 哈哈哈, 笑出声
+                    </a>
+                </div>
+            </div>
+            {# 标签 #}
+            <div class="panel panel-info">
+                <a class="panel-heading" onclick="$('.tags_box').slideToggle()" href="javascript:;">
+                    <h3 class="panel-title">标签</h3>
+                </a>
+                <div class="tags_box">
+                    <a href="https://xlzd.me/tag/Python/" rel="tag" class="item size-0" title="37 个话题">Python<span class="badge pull-right"> 37</span></a>
+                    <a href="https://xlzd.me/tag/crawler/" rel="tag" class="item size-20" title="10 个话题">Crawler<span class="badge pull-right"> 10</span></a>
+                    <a href="https://xlzd.me/tag/algotithm/" rel="tag" class="item size-5" title="4 个话题">算法<span class="badge pull-right"> 4</span></a>
+                    <a href="https://xlzd.me/tag/re/" rel="tag" class="item size-5" title="3 个话题">re<span class="badge pull-right"> 3</span></a>
+                    <a href="https://xlzd.me/tag/MongoDB/" rel="tag" class="item size-5" title="3 个话题">MongoDB<span class="badge pull-right"> 3</span></a>
+                </div>
+            </div>
+            {# 归档 #}
+            <div class="panel panel-info">
+                <a class="panel-heading" onclick="$('.article_cate_box').slideToggle()" href="javascript:;">
+                    <h3 class="panel-title">归档</h3>
+                </a>
+                <div class="article_cate_box">
+                    <a href="https://xlzd.me/2016/11/" class="item">2016-11</a><a href="https://xlzd.me/2016/10/" class="item">2016-10</a><a href="https://xlzd.me/2016/07/" class="item">2016-07</a><a href="https://xlzd.me/2016/06/" class="item">2016-06</a><a href="https://xlzd.me/2016/05/" class="item">2016-05</a><a href="https://xlzd.me/2016/03/" class="item">2016-03</a><a href="https://xlzd.me/2016/01/" class="item">2016-01</a><a href="https://xlzd.me/2015/12/" class="item">2015-12</a><a href="https://xlzd.me/2015/11/" class="item">2015-11</a><a href="https://xlzd.me/2015/10/" class="item">2015-10</a><a href="https://xlzd.me/2015/09/" class="item">2015-09</a><a href="https://xlzd.me/2015/08/" class="item">2015-08</a><a href="https://xlzd.me/2015/07/" class="item">2015-07</a><a href="https://xlzd.me/2015/05/" class="item">2015-05</a><a href="https://xlzd.me/2015/04/" class="item">2015-04</a><a href="https://xlzd.me/2015/03/" class="item">2015-03</a><a href="https://xlzd.me/2015/02/" class="item">2015-02</a><a href="https://xlzd.me/2015/01/" class="item">2015-01</a><a href="https://xlzd.me/2014/12/" class="item">2014-12</a>	    </div>
+            </div>
+            {# 友情链接 #}
+            <div class="panel panel-info"><a class="panel-heading" onclick="$('.links_box').
+		slideToggle()" href="javascript:;"><h3 class="panel-title">友情链接</h3></a><div class="links_box"><a class="item" href="http://blog.94fzb.com/" title="Chun's blog" target="_blank">Chun' s blog </a>
+                <a class="item" href="http://rockyblog.cn" title="" target="_blank">rockyblog</a>
+                <a class="item" href="http://www.yangbajing.me/" title="" target="_blank">羊八井花园</a>
+                <a class="item" href="http://life.zhangxingqiu.cn/" title="" target="_blank">小正说事</a>
+                <a class="item" href="http://zhuanlan.zhihu.com/xlz-d" title="" target="_blank">我的知乎专栏</a>
+            </div></div></div>
+
+
+        <!--
+        <script src="//cdn.bootcss.com/bootstrap-material-design/0.3.0/js/material.min.js"></script>
+        <script src="//cdn.bootcss.com/bootstrap-material-design/0.3.0/js/ripples.min.js"></script>
+            -->
+        <script src="https://xlzd.me/usr/themes/material/js/snow-v3.jquery.js"></script>
+    </div>
+</div>
+<script>
+    $.material.init();
+</script>
+</body>
+</html>

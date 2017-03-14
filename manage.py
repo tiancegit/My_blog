@@ -11,6 +11,9 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 app = create_app(os.getenv('MY_BLOG_CONFIG') or 'default')
+# 取消jinja2渲染时产生的空行
+app.jinja_env.trim_blocks = True
+app.jinja_env.lstrip_blocks = True
 manager = Manager(app)
 migrate = Migrate(app, db)
 

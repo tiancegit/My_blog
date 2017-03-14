@@ -24,7 +24,6 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     # 配置bootstrap是否使用本地的文件。
     BOOTSTRAP_SERVE_LOCAL = True
-
     MY_BLOG_SUBJECT_PREFIX = '[宁缺の博客]'
     MY_BLOG_MAIL_SENDER = 'My_Blog Admin <tiance.1984@gmail.com>'
 

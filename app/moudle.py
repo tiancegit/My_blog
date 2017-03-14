@@ -89,6 +89,7 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body_html = db.Column(db.Text)
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     # 处理body字段变化的函数
     @staticmethod
@@ -110,13 +111,13 @@ class Post(db.Model):
 db.event.listen(Post.body, 'set', Post.on_changed_post)
 
 
-
-
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text)
+    content_body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     author_name = db.Column(db.String(64))
     author_email = db.Column(db.String(64))
+    author_website = db.Column(db.String(64))
     avatar_hash = db.Column(db.String(32))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))

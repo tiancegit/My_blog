@@ -24,54 +24,148 @@
 {% block title %}My_blog{% endblock %}
 
 {% block body %}
-    <header>
-        <div class="navbar navbar-fixed-top navbar-inverse" style="box-shadow:0px 3px 30px #002;-moz-box-shadow:0px 3px 30px #002;-webkit-box-shadow:0px 3px 30px #002;">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" id="logo" href="{{ url_for('main.index') }}">宁缺の博客</a>
-                </div>
-                <div class="navbar-collapse collapse navbar-responsive-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ url_for('main.index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
-                        <li><a href="{{ url_for('main.tech') }}" title="技术">技术</a></li>
-                        <li><a href="{{ url_for('main.isay') }}" title="杂谈">杂谈</a></li>
-                        <li><a href="{{ url_for('main.music') }}" title="音乐">音乐</a></li>
-                        <li><a href="{{ url_for('main.about') }}" title="关于">关于</a></li>
-                        {% if current_user.is_authenticated %}
-                            <li><a href="{{ url_for('auth.logout') }}" title="退出">退出</a></li>
-                            <li><a href="{{ url_for('main.index') }}" title="账户管理">账户管理</a></li>
-                        {% else %}
-                            <li><a href="{{ url_for('auth.login') }}" title="登录">登录</a></li>
-                        {% endif %}
-                    </ul>
-                    {% if current_user.is_authenticated %}
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="{{ url_for('main.writer') }}">写文章</a></li>
+    {% block navbar %}
+        <header>
+            <div class="navbar navbar-fixed-top navbar-inverse" style="box-shadow:0px 3px 30px #002;-moz-box-shadow:0px 3px 30px #002;-webkit-box-shadow:0px 3px 30px #002;">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a class="navbar-brand" id="logo" href="{{ url_for('main.index') }}">宁缺の博客</a>
+                    </div>
+                    <div class="navbar-collapse collapse navbar-responsive-collapse">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="{{ url_for('main.index') }}"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>宁缺の博客</a></li>
+                            <li><a href="{{ url_for('main.tech') }}" title="技术">技术</a></li>
+                            <li><a href="{{ url_for('main.isay') }}" title="杂谈">杂谈</a></li>
+                            <li><a href="{{ url_for('main.music') }}" title="音乐">音乐</a></li>
+                            <li><a href="{{ url_for('main.about') }}" title="关于">关于</a></li>
+                            {% if current_user.is_authenticated %}
+                                <li><a href="{{ url_for('auth.logout') }}" title="退出">退出</a></li>
+                                <li><a href="{{ url_for('main.index') }}" title="账户管理">账户管理</a></li>
+                            {% else %}
+                                <li><a href="{{ url_for('auth.login') }}" title="登录">登录</a></li>
+                            {% endif %}
                         </ul>
-                    {% endif %}
+                        {% if current_user.is_authenticated %}
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a href="{{ url_for('main.writer') }}">写文章</a></li>
+                            </ul>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>
+    {% endblock %}
 
     {% block content %}
-        <div class="container">
-            {% for message in get_flashed_messages(with_categories=True) %}
-                <br />
-                <br />
-                <br />
-                <div class="alert alert-{{ message[0] }}">
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                    {{ message[1] }}
-                </div>
-            {% endfor %}
-            {% block page_content %}{% endblock %}
+        <div class="container" id="main">
+            <div class="row">
+                {% for message in get_flashed_messages(with_categories=True) %}
+                    <div class="alert alert-{{ message[0] }}">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message[1] }}
+                    </div>
+                {% endfor %}
+
+                {% block page_content %}{% endblock %}
+                {% block col_md_3 %}
+                    {#    右边各个栏目    #}
+                    <div class="col-md-3">
+                        {# 搜索框 #}
+                        <form method="post" action="" class="panel-body">
+                            <div class="input-group">
+                                <div class="form-control-wrapper">
+                                    <input type="text" name="s" class="form-control floating-label" placeholder="搜索" size="32" />
+                                </div>
+                                <span class="input-group-btn">
+		    	<button class="btn btn-primary btn-fab btn-raised mdi-action-search" value="" id="search-btn" type="submit"></button>
+			</span>
+                            </div>
+                        </form>
+                        {# 公众号二维码 #}
+                        <div class="panel panel-info">
+                            <a style="background-color: black" class="panel-heading" onclickr="$('.other_box').slideToggle()" href="javascript:;">
+                                <h3 class="panel-title"><b>微信公众号</b></h3>
+                            </a>
+                            <div class="other_box">
+
+                                <!-- <img alt="xlzd talk" style="width:100%" src="http://xlzd.me/usr/uploads/common/wechat.jpg">-->
+                                <img alt="xlzd talk" style="width:100%" src="https://xlzd.me/usr/uploads/common/xlzdtalk.jpg">
+                                <!--
+                                <div class="github-card" data-user="xlzd"></div>
+                                <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
+                                -->
+                            </div>
+                        </div>
+                        {# 最新文章 #}
+                        <div class="panel panel-info">
+                            <a class="panel-heading" onclick="$('.recent_posts_box').slideToggle()" href="javascript:;">
+                                <h3 class="panel-title">最新文章</h3>
+                            </a>
+                            <div class="recent_posts_box">
+                                <a href="https://xlzd.me/2016/11/19/xart" class="item">xart: generate art ascii texts. </a><a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf" class="item">Python 乱码指北：一行删掉根目录</a><a href="https://xlzd.me/2016/07/09/object-in-py" class="item">Python 中的对象概述</a><a href="https://xlzd.me/2016/07/08/compile-py" class="item">从源码编译 Python</a><a href="https://xlzd.me/2016/06/27/openvpn" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务</a><a href="https://xlzd.me/2016/05/31/longquansi" class="item">五月晦忆五月朔与老夏小事</a><a href="https://xlzd.me/2016/05/20/ellipsis" class="item">优雅的 Python 之 Ellipsis</a><a href="https://xlzd.me/2016/03/30/string-compress" class="item">一道关于字符串的面试题</a><a href="https://xlzd.me/2016/03/26/is-unique-char" class="item">如何确定一个字符串中是否所有字符全部互不相同</a><a href="https://xlzd.me/2016/03/14/sp-sort" class="item">几种无用但有趣的排序算法</a>	    </div>
+                        </div>
+                        {# 最新回复 #}
+                        <div class="panel panel-info">
+                            <a class="panel-heading" onclick="$('.comments_box').slideToggle()" href="javascript:;">
+                                <h3 class="panel-title">最新回复</h3>
+                            </a>
+                            <div class="comments_box">
+                                <a href="https://xlzd.me/2016/06/27/openvpn#pingback-173" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务 | AICloud: [...]原文：怎样在 Ubuntu 16.04 上安...</a>
+                                <a href="https://xlzd.me/2015/12/11/requests#comment-171" class="item">藏锋: 很好的爬虫知识，感谢博主的工作！！
+                                </a>
+                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-170" class="item">icybee: cool，当作职业规划的参考啦～
+                                </a>
+                                <a href="https://xlzd.me/2015/12/15/graph#comment-169" class="item">下载了软件无从下手的小朋友: 此刻是最好的连同着疑问都是最好的
+                                </a>
+                                <a href="https://xlzd.me/2016/06/27/openvpn#comment-168" class="item">下载了软件无从下手的小朋友: 您好呀～程序员小哥哥，可以录个视频么，好想试一试啊 可...</a>
+                                <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-167" class="item">loftnova: pool = set()
+                                    for char in s:...</a>
+                                <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-166" class="item">Roll: len(set(string)) == len(str...</a>
+                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-165" class="item">xlzd: 其实不需要太多 JS 知识。
+                                </a>
+                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-164" class="item">再见蒲公英: 如果要学会这样的可视化，就得先学JS，对吗？
+                                </a>
+                                <a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf#comment-163" class="item">Rancho: 哈哈哈, 笑出声
+                                </a>
+                            </div>
+                        </div>
+                        {# 标签 #}
+                        <div class="panel panel-info">
+                            <a class="panel-heading" onclick="$('.tags_box').slideToggle()" href="javascript:;">
+                                <h3 class="panel-title">标签</h3>
+                            </a>
+                            <div class="tags_box">
+                                <a href="https://xlzd.me/tag/Python/" rel="tag" class="item size-0" title="37 个话题">Python<span class="badge pull-right"> 37</span></a>
+                                <a href="https://xlzd.me/tag/crawler/" rel="tag" class="item size-20" title="10 个话题">Crawler<span class="badge pull-right"> 10</span></a>
+                                <a href="https://xlzd.me/tag/algotithm/" rel="tag" class="item size-5" title="4 个话题">算法<span class="badge pull-right"> 4</span></a>
+                                <a href="https://xlzd.me/tag/re/" rel="tag" class="item size-5" title="3 个话题">re<span class="badge pull-right"> 3</span></a>
+                                <a href="https://xlzd.me/tag/MongoDB/" rel="tag" class="item size-5" title="3 个话题">MongoDB<span class="badge pull-right"> 3</span></a>
+                            </div>
+                        </div>
+                        {# 归档 #}
+                        <div class="panel panel-info">
+                            <a class="panel-heading" onclick="$('.article_cate_box').slideToggle()" href="javascript:;">
+                                <h3 class="panel-title">归档</h3>
+                            </a>
+                            <div class="article_cate_box">
+                                <a href="https://xlzd.me/2016/11/" class="item">2016-11</a><a href="https://xlzd.me/2016/10/" class="item">2016-10</a><a href="https://xlzd.me/2016/07/" class="item">2016-07</a><a href="https://xlzd.me/2016/06/" class="item">2016-06</a><a href="https://xlzd.me/2016/05/" class="item">2016-05</a><a href="https://xlzd.me/2016/03/" class="item">2016-03</a><a href="https://xlzd.me/2016/01/" class="item">2016-01</a><a href="https://xlzd.me/2015/12/" class="item">2015-12</a><a href="https://xlzd.me/2015/11/" class="item">2015-11</a><a href="https://xlzd.me/2015/10/" class="item">2015-10</a><a href="https://xlzd.me/2015/09/" class="item">2015-09</a><a href="https://xlzd.me/2015/08/" class="item">2015-08</a><a href="https://xlzd.me/2015/07/" class="item">2015-07</a><a href="https://xlzd.me/2015/05/" class="item">2015-05</a><a href="https://xlzd.me/2015/04/" class="item">2015-04</a><a href="https://xlzd.me/2015/03/" class="item">2015-03</a><a href="https://xlzd.me/2015/02/" class="item">2015-02</a><a href="https://xlzd.me/2015/01/" class="item">2015-01</a><a href="https://xlzd.me/2014/12/" class="item">2014-12</a>	    </div>
+                        </div>
+                        {# 友情链接 #}
+                        <div class="panel panel-info"><a class="panel-heading" onclick="$('.links_box').
+		slideToggle()" href="javascript:;"><h3 class="panel-title">友情链接</h3></a><div class="links_box"><a class="item" href="http://blog.94fzb.com/" title="Chun's blog" target="_blank">Chun' s blog </a>
+                            <a class="item" href="http://rockyblog.cn" title="" target="_blank">rockyblog</a>
+                            <a class="item" href="http://www.yangbajing.me/" title="" target="_blank">羊八井花园</a>
+                            <a class="item" href="http://life.zhangxingqiu.cn/" title="" target="_blank">小正说事</a>
+                            <a class="item" href="http://zhuanlan.zhihu.com/xlz-d" title="" target="_blank">我的知乎专栏</a>
+                        </div></div></div>
+                {% endblock %}
+            </div>
         </div>
     {% endblock %}
 

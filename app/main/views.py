@@ -2,9 +2,9 @@
 from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app, jsonify, Response, abort
 from flask_login import login_required
-from .forms import PostForm, EditPostForm
+from .forms import PostForm, EditPostForm, CommentForm
 from . import main
-from ..moudle import User, Post, db
+from ..moudle import User, Post, db, Comment
 import os
 
 
@@ -127,26 +127,36 @@ def post_all(year, month=None, day=None):
     return render_template('post-all.html', posts=posts, pagination=pagination, year=year, month=month, day=day)
 
 
-@main.route('/<int:year>/<int:month>/<int:day>/<short_title>')
+@main.route('/<int:year>/<int:month>/<int:day>/<short_title>', methods=['GET', 'POST'])
 def post(year, month, day, short_title):
     # 文章固定链接的路由.
     if year is not None and month is not None and day is not None and short_title is not None:
         # 路由 /2017/02/04/Python
-        post = Post.query.filter_by(short_title=short_title).first()
-        if post is None:
-            # 尝试性查询文章,若为空值,则返回404
-            return 'a'
         start_time = '{year}-{month:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, month=month, day=day)
         end_time = '{year}-{month:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, month=month, day=day)
         post = Post.query.filter(Post.timestamp.between(start_time, end_time)).filter_by(short_title=short_title).first()
-        return render_template('post.html', post=post)
-
+        if post is None:
+            # 尝试性查询文章,若为空值,则返回404
+            return abort(404)
+        form = CommentForm()
+        if form.validate_on_submit():
+            comment = Comment(author_name=form.author_name.data,
+                              author_email=form.author_email.data,
+                              author_website=form.author_website.data,
+                              content_body=form.content_body.data,
+                              post=post)
+            db.session.add(comment)
+            flash(u'已经成功评论', 'info')
+            return redirect(url_for('main.post', year=post.timestamp.year, month=post.timestamp.month,
+                                    day=post.timestamp.day, short_title=post.short_title))
+        return render_template('post.html', post=post, form=form)
+    else:
+        return abort(404)
 
 
 @main.route('/tech')
 def tech():
-    return current_app.config['SAVEPIC']
-
+    return ''
 
 @main.route('/isay')
 def isay():

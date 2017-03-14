@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% import '_macros.html' as macros %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block title %}宁缺のblog{% endblock %}
 
@@ -11,27 +12,107 @@
 
 
 {% block page_content %}
-    <br />
-    <br />
-    <br />
-    <div class="container">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3 class="post-title"><a href="#" target="_blank">{{ post.title }}</a></h3>
+                <div class="post-meta">
+                    <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
+                    <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
+                    <span>时间：{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} | </span>
+                    <span>评论：<a href="#">1 评论</a> </span>
+                </div>
+                <div class="post-content">
+                    {{ post.body_html | safe }}
+                </div>
+                <br />
+                <hr />
+                {# 知识协议 #}
+                <div style="text-align: center; float:left;margin-right:10px;">
+                    <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">
+                        <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/cn/88x31.png">
+                    </a>
+                    <br>
+                    本博客采用<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/"><b>BY-NC-SA</b></a>协议进行许可
+
+                </div>
+                {# 分享功能 #}
+                <div class="bdsharebuttonbox" style="text-align:right;float:right;marin-right:10px">
+                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div>
+                <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":[],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+            </div>
+        </div>
+        {# 标签数量 #}
+        <p class="tags">标签:<a href="#">python</a></p>
         <div class="row">
-            <div class="col-md-9">
-                <div class="panel panel-default">
+
+            <div class="alert alert-info">
+                <span>只有地板了</span>
+            </div>
+
+            <div class="respond">
+                <div class="respond panel panel-default">
                     <div class="panel-body">
-                        <h3 class="post-title"><a href="#">{{ post.title }}</a></h3>
-                    </div>
-                    <div class="post-meta">
-                        <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
-                        <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
-                        <span>时间：{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} | </span>
-                        <span>评论：<a href="#">1 评论</a> </span>
-                    </div>
-                    <div class="post-content">
-                        {{ post.body_html | safe }}
+                        <div class="cancel-comment-reply"></div>
+                        <h3 id="response">添加新评论</h3>
+                        <!-- 输入表单开始 -->
+                        <form class="form" method="POST">
+                            {{ form.hidden_tag() }}
+                            <div class="form-group">
+                                <label for="author" class="col-sm-2 control-label required">昵称</label>
+                                <div class="col-sm-9">
+                                    <div class="form-control-wrapper">
+                                        {# <input type="text" name="author" class="form-control text empty" size="35" value="test" />#}
+                                        {{ form.author_name.label }}{{ form.author_name(class="form-control text empty", size="35") }}
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mail" class="col-sm-2 control-label required">邮箱</label>
+                                <div class="col-sm-9">
+                                    <div class="form-control-wrapper">
+                                        {# <input type="email" name="mail" class="form-control text mpty" size="35" value="test@gmail.com" />#}
+                                        {{ form.author_email.label }}{{ form.author_email(class="form-control text empty", size="35") }}
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="url" class="col-sm-2 control-label required">网站</label>
+                                <div class="col-sm-9">
+                                    <div class="form-control-wrapper">
+                                        {# <input type="url" name="url" class="form-control text empty" size="35" value="https://xlze.me" placeholder="http://"/>#}
+                                        {{ form.author_website.label }}{{ form.author_website(class="form-control text empty", size="35", placeholder="http://") }}
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="textarea" class="col-sm-2 control-label required">内容</label>
+                                <div class="col-sm-9">
+                                    <div class="form-control-wrapper">
+                                        {# <textarea rows="5" cols="50" name="text" id="textarea" class="form-control textarea  empty" required=""></textarea>#}
+                                        {{ form.content_body.label }}{{ form.content_body(rows="5", cols="50", class="form-control textarea  empty", required="") }}
+                                        <span class="material-input"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-5">
+                                    {# <button type="submit" id="submit" class="btn btn-success btn-raised submit">提交评论</button>#}
+                                    {{ form.submit(class="btn btn-success btn-raised submit") }}
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
+
         </div>
-</div>
+    </div>
 {% endblock %}
