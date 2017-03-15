@@ -88,27 +88,31 @@
                             </div>
                         </form>
                         {# 公众号二维码 #}
-                        <div class="panel panel-info">
-                            <a style="background-color: black" class="panel-heading" onclickr="$('.other_box').slideToggle()" href="javascript:;">
-                                <h3 class="panel-title"><b>微信公众号</b></h3>
-                            </a>
-                            <div class="other_box">
-
-                                <!-- <img alt="xlzd talk" style="width:100%" src="http://xlzd.me/usr/uploads/common/wechat.jpg">-->
-                                <img alt="xlzd talk" style="width:100%" src="https://xlzd.me/usr/uploads/common/xlzdtalk.jpg">
-                                <!--
-                                <div class="github-card" data-user="xlzd"></div>
-                                <script src="//cdn.jsdelivr.net/github-cards/latest/widget.js"></script>
-                                -->
-                            </div>
-                        </div>
+                        {#                        <div class="panel panel-info">#}
+                        {#                            <a style="background-color: black" class="panel-heading" onclickr="$('.other_box').slideToggle()" href="javascript:;">#}
+                        {#                                <h3 class="panel-title"><b>微信公众号</b></h3>#}
+                        {#                            </a>#}
+                        {#                            <div class="other_box">#}
+                        {#                                <img alt="xlzd talk" style="width:100%" src="#">#}
+                        {#                            </div>#}
+                        {#                        </div>#}
                         {# 最新文章 #}
                         <div class="panel panel-info">
                             <a class="panel-heading" onclick="$('.recent_posts_box').slideToggle()" href="javascript:;">
                                 <h3 class="panel-title">最新文章</h3>
                             </a>
                             <div class="recent_posts_box">
-                                <a href="https://xlzd.me/2016/11/19/xart" class="item">xart: generate art ascii texts. </a><a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf" class="item">Python 乱码指北：一行删掉根目录</a><a href="https://xlzd.me/2016/07/09/object-in-py" class="item">Python 中的对象概述</a><a href="https://xlzd.me/2016/07/08/compile-py" class="item">从源码编译 Python</a><a href="https://xlzd.me/2016/06/27/openvpn" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务</a><a href="https://xlzd.me/2016/05/31/longquansi" class="item">五月晦忆五月朔与老夏小事</a><a href="https://xlzd.me/2016/05/20/ellipsis" class="item">优雅的 Python 之 Ellipsis</a><a href="https://xlzd.me/2016/03/30/string-compress" class="item">一道关于字符串的面试题</a><a href="https://xlzd.me/2016/03/26/is-unique-char" class="item">如何确定一个字符串中是否所有字符全部互不相同</a><a href="https://xlzd.me/2016/03/14/sp-sort" class="item">几种无用但有趣的排序算法</a>	    </div>
+                                <a href="https://xlzd.me/2016/11/19/xart" class="item">xart: generate art ascii texts. </a>
+                                <a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf" class="item">Python 乱码指北：一行删掉根目录</a>
+                                <a href="https://xlzd.me/2016/07/09/object-in-py" class="item">Python 中的对象概述</a>
+                                <a href="https://xlzd.me/2016/07/08/compile-py" class="item">从源码编译 Python</a>
+                                <a href="https://xlzd.me/2016/06/27/openvpn" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务</a>
+                                <a href="https://xlzd.me/2016/05/31/longquansi" class="item">五月晦忆五月朔与老夏小事</a>
+                                <a href="https://xlzd.me/2016/05/20/ellipsis" class="item">优雅的 Python 之 Ellipsis</a>
+                                <a href="https://xlzd.me/2016/03/30/string-compress" class="item">一道关于字符串的面试题</a>
+                                <a href="https://xlzd.me/2016/03/26/is-unique-char" class="item">如何确定一个字符串中是否所有字符全部互不相同</a>
+                                <a href="https://xlzd.me/2016/03/14/sp-sort" class="item">几种无用但有趣的排序算法</a>
+                            </div>
                         </div>
                         {# 最新回复 #}
                         <div class="panel panel-info">
@@ -169,6 +173,19 @@
         </div>
     {% endblock %}
 
+    {% block footer %}
+        <footer>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="pull-left copyright">Copyright &copy; 2016&nbsp;&nbsp;<a href='/'>宁缺的博客</a></div>
+                    <ul class="footer-nav pull-right">
+                        <li><a href="https://github.com/tiancegit" target="_blank" class="icon-github" title="Github">Github</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
+
     {% block scripts %}
         {{ super() }}
         {#    <script src="https://xlzd.me/usr/themes/material/js/snow-v3.jquery.js"></script>#}
@@ -180,7 +197,8 @@
         {#  本地化日期和时间  #}
         {{ moment.include_moment() }}
         {# 时间戳的语言本地化 #}
-        {{ moment.lang('zh_cn') }}
+        {#        {{ moment.lang('zh_cn') }}#}
+        {{ moment.lang('en') }}
     {% endblock %}
 
 {% endblock %}

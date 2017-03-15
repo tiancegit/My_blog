@@ -22,7 +22,7 @@
                     <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
                     <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
                     <span>时间：{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} | </span>
-                    <span>评论：<a href="#">1 评论</a> </span>
+                    <span>评论：<a href="{{ url_for('main.post', year=post.timestamp.year | int, month=post.timestamp.month | int, day=post.timestamp.day | int, short_title=post.short_title) }}#comments">{{ post.comments.count() }} 评论</a> </span>
                 </div>
                 <div class="post-content">
                     {{ post.body_html | split_body_html | safe }}

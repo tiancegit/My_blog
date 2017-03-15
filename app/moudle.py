@@ -8,6 +8,8 @@ from flask import current_app
 from datetime import datetime
 from markdown import markdown
 import bleach
+import hashlib
+from flask import request
 
 
 class User(UserMixin, db.Model):
@@ -117,7 +119,23 @@ class Comment(db.Model):
     content_body = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     author_name = db.Column(db.String(64))
-    author_email = db.Column(db.String(64))
-    author_website = db.Column(db.String(64))
+    author_email = db.Column(db.String(64), default=None)
+    author_website = db.Column(db.String(64), default=None)
     avatar_hash = db.Column(db.String(32))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def __init__(self, **kwargs):
+        super(Comment, self).__init__(**kwargs)
+        if self.author_email is not None and self.avatar_hash is None:
+            self.avatar_hash = hashlib.md5(self.author_email.encode('utf-8')).hexdigest()
+
+    def gravatar(self, size=100, default='', rating=9):
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+
+        hash = self.avatar_hash or hashlib.md5(
+            self.author_email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)

@@ -19,7 +19,7 @@
                 <div class="post-meta">
                     <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
                     <span>分类：<a href="{{ url_for('main.tech') }}">技术</a> | </span>
-                    <span>时间：{{ post.timestamp.strftime('%Y-%m-%d %H:%M:%S') }} | </span>
+                    <span>时间：{{ moment(post.timestamp).format("YYYY-MM-DD HH:mm:ss") }} | </span>
                     <span>评论：<a href="#">1 评论</a> </span>
                 </div>
                 <div class="post-content">
@@ -43,76 +43,115 @@
             </div>
         </div>
         {# 标签数量 #}
-        <p class="tags">标签:<a href="#">python</a></p>
+        <p class="tags">标签：<a href="#">Python</a></p>
         <div class="row">
+            <div id="comments">
+                <div class="alert alert-info">
+                    {% if comments.count() == 0 %}
+                    <span>还不快抢沙发！</span>
+                    {% elif comments.count() == 1%}
+                    <span>只有地板了！</span>
+                    {% else %}
+                    <span>已有 {{ comments.count() }} 条评论！</span>
+                    {% endif %}
+                </div>
+                <ol class="comment-list">
+                    {% for comment in comments %}
+                        <li itemscope itemtype="http://schema.org/UserComments" class=" comment-body comment-parent comment-odd">
+                            <div class="comment-author" itemprop="creator" itemscope itemtype="http://schema.org/Person">
+                                <span itemprop="image"><img class="avatar" src="{{ comment.gravatar(size=32) }}" alt="{{ comment.author_name }}" width="32" height="32" /></span>
+                                {% if comment.author_website %}
+                                    {# 如果填写有网站 #}
+                                    <cite class="fn" style="font-style:normal" itemprop="name">
+                                        <a href="{{ comment.author_website }}" rel="external nofollow">{{ comment.author_name }}</a>
+                                    </cite>
+                                {% else %}
+                                    <cite class="fn" style="font-style:normal" itemprop="name">
+                                        {{ comment.author_name }}
+                                    </cite>
+                                {% endif %}
+                            </div>
 
-            <div class="alert alert-info">
-                <span>只有地板了</span>
-            </div>
-
-            <div class="respond">
-                <div class="respond panel panel-default">
-                    <div class="panel-body">
-                        <div class="cancel-comment-reply"></div>
-                        <h3 id="response">添加新评论</h3>
-                        <!-- 输入表单开始 -->
-                        <form class="form" method="POST">
-                            {{ form.hidden_tag() }}
-                            <div class="form-group">
-                                <label for="author" class="col-sm-2 control-label required">昵称</label>
-                                <div class="col-sm-9">
-                                    <div class="form-control-wrapper">
-                                        {# <input type="text" name="author" class="form-control text empty" size="35" value="test" />#}
-                                        {{ form.author_name.label }}{{ form.author_name(class="form-control text empty", size="35") }}
-                                        <span class="material-input"></span>
+                            <div class="comment-meta">
+                                <a href="{{ url_for('main.post', year=post.timestamp.year | int, month=post.timestamp.month | int, day=post.timestamp.day | int, short_title=post.short_title) }}#comment">
+                                    <time itemprop="commentTime" datetime="{{ comment.timestamp }}">{{ moment(comment.timestamp).format("YYYY-MM-DD HH:mm:ss") }}</time>
+                                </a>
+                            </div>
+                            <div class="comment-content" itemprop="commentText">
+                                <p>{{ comment.content_body }}</p>
+                            </div>
+                            {% if current_user.is_authenticated %}
+                                <div class="comment-reply">
+                                    <a href="mailto:{{ comment.author_email }}" rel="nofollow">联系Ta</a>
+                                </div>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ol>
+                <div class="respond">
+                    <div class="respond panel panel-default">
+                        <div class="panel-body">
+                            <div class="cancel-comment-reply"></div>
+                            <h3>添加新评论</h3>
+                            <!-- 输入表单开始 -->
+                            <form class="form" method="POST">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group">
+                                    <label for="author" class="col-sm-2 control-label required">昵称</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-control-wrapper">
+                                            {# <input type="text" name="author" class="form-control text empty" size="35" value="test" />#}
+                                            {{ form.author_name.label }}{{ form.author_name(class="form-control text empty", size="35") }}
+                                            <span class="material-input"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="mail" class="col-sm-2 control-label required">邮箱</label>
-                                <div class="col-sm-9">
-                                    <div class="form-control-wrapper">
-                                        {# <input type="email" name="mail" class="form-control text mpty" size="35" value="test@gmail.com" />#}
-                                        {{ form.author_email.label }}{{ form.author_email(class="form-control text empty", size="35") }}
-                                        <span class="material-input"></span>
+                                <div class="form-group">
+                                    <label for="mail" class="col-sm-2 control-label required">邮箱</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-control-wrapper">
+                                            {# <input type="email" name="mail" class="form-control text mpty" size="35" value="test@gmail.com" />#}
+                                            {{ form.author_email.label }}{{ form.author_email(class="form-control text empty", size="35") }}
+                                            <span class="material-input"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="url" class="col-sm-2 control-label required">网站</label>
-                                <div class="col-sm-9">
-                                    <div class="form-control-wrapper">
-                                        {# <input type="url" name="url" class="form-control text empty" size="35" value="https://xlze.me" placeholder="http://"/>#}
-                                        {{ form.author_website.label }}{{ form.author_website(class="form-control text empty", size="35", placeholder="http://") }}
-                                        <span class="material-input"></span>
+                                <div class="form-group">
+                                    <label for="url" class="col-sm-2 control-label required">网站</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-control-wrapper">
+                                            {# <input type="url" name="url" class="form-control text empty" size="35" value="https://xlze.me" placeholder="http://"/>#}
+                                            {{ form.author_website.label }}{{ form.author_website(class="form-control text empty", size="35", placeholder="http://") }}
+                                            <span class="material-input"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="textarea" class="col-sm-2 control-label required">内容</label>
-                                <div class="col-sm-9">
-                                    <div class="form-control-wrapper">
-                                        {# <textarea rows="5" cols="50" name="text" id="textarea" class="form-control textarea  empty" required=""></textarea>#}
-                                        {{ form.content_body.label }}{{ form.content_body(rows="5", cols="50", class="form-control textarea  empty", required="") }}
-                                        <span class="material-input"></span>
+                                <div class="form-group">
+                                    <label for="textarea" class="col-sm-2 control-label required">内容</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-control-wrapper">
+                                            {# <textarea rows="5" cols="50" name="text" id="textarea" class="form-control textarea  empty" required=""></textarea>#}
+                                            {{ form.content_body.label }}{{ form.content_body(rows="5", cols="50", class="form-control textarea  empty", required="") }}
+                                            <span class="material-input"></span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <div class="col-sm-offset-2 col-sm-5">
-                                    {# <button type="submit" id="submit" class="btn btn-success btn-raised submit">提交评论</button>#}
-                                    {{ form.submit(class="btn btn-success btn-raised submit") }}
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-5">
+                                        {# <button type="submit" id="submit" class="btn btn-success btn-raised submit">提交评论</button>#}
+                                        {{ form.submit(class="btn btn-success btn-raised submit") }}
+                                    </div>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 {% endblock %}

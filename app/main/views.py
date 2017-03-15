@@ -145,11 +145,13 @@ def post(year, month, day, short_title):
                               author_website=form.author_website.data,
                               content_body=form.content_body.data,
                               post=post)
+
             db.session.add(comment)
             flash(u'已经成功评论', 'info')
             return redirect(url_for('main.post', year=post.timestamp.year, month=post.timestamp.month,
                                     day=post.timestamp.day, short_title=post.short_title))
-        return render_template('post.html', post=post, form=form)
+        comments = post.comments.order_by(Comment.timestamp.asc())
+        return render_template('post.html', post=post, form=form, comments=comments)
     else:
         return abort(404)
 

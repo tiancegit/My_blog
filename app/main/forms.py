@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectMultipleField, ValidationError, SubmitField
-from wtforms.validators import DataRequired, length, Email, Regexp
+from wtforms.validators import DataRequired, length, Email, Regexp, Optional
 from ..moudle import Post
 
 
@@ -30,8 +30,8 @@ class EditPostForm(FlaskForm):
 
 class CommentForm(FlaskForm):
     author_name = StringField('', validators=[DataRequired(), length(1, 64)])
-    author_email = StringField('', validators=[DataRequired(), length(1, 64), Email(message='这不是一个有效的邮箱地址')])
-    author_website = StringField('', validators=[DataRequired(), length(1, 64),
+    author_email = StringField('', validators=[Optional(), length(1, 64), Email(message='这不是一个有效的邮箱地址')])
+    author_website = StringField('', validators=[Optional(), length(1, 64),
                                                     Regexp(r'''(?i)\b((?:[a-z][\w-]+:(?:/{1,3}|[a-z0-9%])|www\d{0,3}[.]|
                                                     [a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+
                                                     \)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,
