@@ -7,12 +7,13 @@ from config import config
 from flask_login import LoginManager
 from flask_mail import Mail
 from flask_markdown import markdown
-
+from flask_debugtoolbar import DebugToolbarExtension
 
 bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
 mail = Mail()
+toolbar = DebugToolbarExtension()
 # markdown = MarkDown()
 markdown(app=Flask(__name__))
 login_manager = LoginManager()
@@ -32,6 +33,7 @@ def create_app(config_name):
     moment.init_app(app)
     db.init_app(app)
     mail.init_app(app)
+    toolbar.init_app(app)
     # markdown.init_app(app)
     login_manager.init_app(app)
 

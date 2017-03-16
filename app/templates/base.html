@@ -102,16 +102,11 @@
                                 <h3 class="panel-title">最新文章</h3>
                             </a>
                             <div class="recent_posts_box">
-                                <a href="https://xlzd.me/2016/11/19/xart" class="item">xart: generate art ascii texts. </a>
-                                <a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf" class="item">Python 乱码指北：一行删掉根目录</a>
-                                <a href="https://xlzd.me/2016/07/09/object-in-py" class="item">Python 中的对象概述</a>
-                                <a href="https://xlzd.me/2016/07/08/compile-py" class="item">从源码编译 Python</a>
-                                <a href="https://xlzd.me/2016/06/27/openvpn" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务</a>
-                                <a href="https://xlzd.me/2016/05/31/longquansi" class="item">五月晦忆五月朔与老夏小事</a>
-                                <a href="https://xlzd.me/2016/05/20/ellipsis" class="item">优雅的 Python 之 Ellipsis</a>
-                                <a href="https://xlzd.me/2016/03/30/string-compress" class="item">一道关于字符串的面试题</a>
-                                <a href="https://xlzd.me/2016/03/26/is-unique-char" class="item">如何确定一个字符串中是否所有字符全部互不相同</a>
-                                <a href="https://xlzd.me/2016/03/14/sp-sort" class="item">几种无用但有趣的排序算法</a>
+                                {% for post in g.latest_posts %}
+                                    <a href="{{ url_for('main.post', year=post.timestamp.year | int, month=post.timestamp.month | int, day=post.timestamp.day | int, short_title=post.short_title) }}" class="item">
+                                        {{ post.title }}
+                                    </a>
+                                {% endfor %}
                             </div>
                         </div>
                         {# 最新回复 #}
@@ -120,23 +115,11 @@
                                 <h3 class="panel-title">最新回复</h3>
                             </a>
                             <div class="comments_box">
-                                <a href="https://xlzd.me/2016/06/27/openvpn#pingback-173" class="item">怎样在 Ubuntu 16.04 上安装 OpenVPN 服务 | AICloud: [...]原文：怎样在 Ubuntu 16.04 上安...</a>
-                                <a href="https://xlzd.me/2015/12/11/requests#comment-171" class="item">藏锋: 很好的爬虫知识，感谢博主的工作！！
-                                </a>
-                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-170" class="item">icybee: cool，当作职业规划的参考啦～
-                                </a>
-                                <a href="https://xlzd.me/2015/12/15/graph#comment-169" class="item">下载了软件无从下手的小朋友: 此刻是最好的连同着疑问都是最好的
-                                </a>
-                                <a href="https://xlzd.me/2016/06/27/openvpn#comment-168" class="item">下载了软件无从下手的小朋友: 您好呀～程序员小哥哥，可以录个视频么，好想试一试啊 可...</a>
-                                <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-167" class="item">loftnova: pool = set()
-                                    for char in s:...</a>
-                                <a href="https://xlzd.me/2016/03/26/is-unique-char#comment-166" class="item">Roll: len(set(string)) == len(str...</a>
-                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-165" class="item">xlzd: 其实不需要太多 JS 知识。
-                                </a>
-                                <a href="https://xlzd.me/2016/03/05/sc-internet#comment-164" class="item">再见蒲公英: 如果要学会这样的可视化，就得先学JS，对吗？
-                                </a>
-                                <a href="https://xlzd.me/2016/10/06/python-one-line-rm-rf#comment-163" class="item">Rancho: 哈哈哈, 笑出声
-                                </a>
+                                {% for comment in g.latest_comments %}
+                                    <a href="{{ url_for('main.post', year=comment.post.timestamp.year | int, month=comment.post.timestamp.month | int, day=comment.post.timestamp.day | int, short_title=comment.post.short_title ) }}" class="item">
+                                        {{ comment.author_name }}:{{ comment.content_body }}
+                                    </a>
+                                {% endfor %}
                             </div>
                         </div>
                         {# 标签 #}
@@ -158,16 +141,16 @@
                                 <h3 class="panel-title">归档</h3>
                             </a>
                             <div class="article_cate_box">
-                                <a href="https://xlzd.me/2016/11/" class="item">2016-11</a><a href="https://xlzd.me/2016/10/" class="item">2016-10</a><a href="https://xlzd.me/2016/07/" class="item">2016-07</a><a href="https://xlzd.me/2016/06/" class="item">2016-06</a><a href="https://xlzd.me/2016/05/" class="item">2016-05</a><a href="https://xlzd.me/2016/03/" class="item">2016-03</a><a href="https://xlzd.me/2016/01/" class="item">2016-01</a><a href="https://xlzd.me/2015/12/" class="item">2015-12</a><a href="https://xlzd.me/2015/11/" class="item">2015-11</a><a href="https://xlzd.me/2015/10/" class="item">2015-10</a><a href="https://xlzd.me/2015/09/" class="item">2015-09</a><a href="https://xlzd.me/2015/08/" class="item">2015-08</a><a href="https://xlzd.me/2015/07/" class="item">2015-07</a><a href="https://xlzd.me/2015/05/" class="item">2015-05</a><a href="https://xlzd.me/2015/04/" class="item">2015-04</a><a href="https://xlzd.me/2015/03/" class="item">2015-03</a><a href="https://xlzd.me/2015/02/" class="item">2015-02</a><a href="https://xlzd.me/2015/01/" class="item">2015-01</a><a href="https://xlzd.me/2014/12/" class="item">2014-12</a>	    </div>
+                                <a href="{{ url_for('main.post_all', year=2017, month=3) }}" class="item">2017-03</a>
+                            </div>
                         </div>
                         {# 友情链接 #}
-                        <div class="panel panel-info"><a class="panel-heading" onclick="$('.links_box').
-		slideToggle()" href="javascript:;"><h3 class="panel-title">友情链接</h3></a><div class="links_box"><a class="item" href="http://blog.94fzb.com/" title="Chun's blog" target="_blank">Chun' s blog </a>
-                            <a class="item" href="http://rockyblog.cn" title="" target="_blank">rockyblog</a>
-                            <a class="item" href="http://www.yangbajing.me/" title="" target="_blank">羊八井花园</a>
-                            <a class="item" href="http://life.zhangxingqiu.cn/" title="" target="_blank">小正说事</a>
-                            <a class="item" href="http://zhuanlan.zhihu.com/xlz-d" title="" target="_blank">我的知乎专栏</a>
-                        </div></div></div>
+                        <div class="panel panel-info">
+                            <a class="panel-heading" onclick="$('.links_box').slideToggle()" href="javascript:;"><h3 class="panel-title">友情链接</h3></a><div class="links_box">
+                            <a class="item" href="" title="" target="_blank"></a>
+                        </div>
+                        </div>
+                    </div>
                 {% endblock %}
             </div>
         </div>

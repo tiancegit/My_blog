@@ -10,7 +10,9 @@ from markdown import markdown
 import bleach
 import hashlib
 from flask import request
-
+# from . import create_app
+#
+# import flask_whooshalchemy as whooshalchemy
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -84,6 +86,7 @@ def load_user(user_id):
 
 class Post(db.Model):
     __tablename__ = 'posts'
+    # __searchable__ = ['body']
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     short_title = db.Column(db.String(64))
@@ -108,6 +111,12 @@ class Post(db.Model):
                 'img': ['src', 'alt']
             }
         ))
+#
+#         def __repr__(self):
+#             return '<Post %r>' % self.text
+#
+# whooshalchemy.whoosh_index(current_app, Post)
+
 
 # 注册监听事件. 当body字段发生变化时,触发函数,完成对应的html_body字段的更新.
 db.event.listen(Post.body, 'set', Post.on_changed_post)
@@ -139,3 +148,5 @@ class Comment(db.Model):
             self.author_email.encode('utf-8')).hexdigest()
         return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
             url=url, hash=hash, size=size, default=default, rating=rating)
+
+

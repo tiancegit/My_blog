@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, current_app, jsonify, Response, abort
+from flask import render_template, flash, redirect, url_for, request, current_app, jsonify, Response, abort, g
 from flask_login import login_required
 from .forms import PostForm, EditPostForm, CommentForm
 from . import main
 from ..moudle import User, Post, db, Comment
 import os
 
+
+@main.before_request
+def latest_post_comment():
+    g.latest_comments = Comment.query.order_by(Comment.timestamp.desc()).limit(10)
+    g.latest_posts = Post.query.order_by(Post.timestamp.desc()).limit(10)
 
 @main.route('/')
 def index():
