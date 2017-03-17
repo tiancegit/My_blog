@@ -15,44 +15,50 @@
 {% block title %}宁缺のblog{% endblock %}
 
 {% block page_content %}
-    <h1 class="text-center">Edit Post</h1>
-    <form method="post">
-        {{form.hidden_tag()}}
-        <div class="form-group  required">
-            {{ form.title.label(class="control-ladel") }}
-            {{ form.title(class_='form-control') }}
-        </div>
+    <div class="container">
+        <div class="row">
 
-        <div class="form-group  required">
-            {{ form.short_title.label(class="control-ladel") }}
-            {{ form.short_title(class_='form-control') }}
-            {% for error in form.short_title.errors %}
-                <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
+            <h1 class="text-center">Edit Post</h1>
+            <form method="post">
+                {{form.hidden_tag()}}
+                <div class="form-group  required">
+                    {{ form.title.label(class="control-ladel") }}
+                    {{ form.title(class_='form-control') }}
+                </div>
 
-        <div class="form-group required">
-            {{ form.tags.label(class="control-ladel") }}
-            <br />
-            {# {{ form.tags(class="form-conrotl", placeholder="输入分类,用英文逗号或回车分割") }}#}
-            {# <input class="form-control" id="tags" name="tags" placeholder="输入分类,使用英文逗号或Enter键分割" type="text" value="">#}
-            <input class= "form-control" placeholder ="输入分类,用英文逗号或回车分割" id = "tags" name = "tags" value="" type = "text" data-role="tagsinput"/>
-        </div>
+                <div class="form-group  required">
+                    {{ form.short_title.label(class="control-ladel") }}
+                    {{ form.short_title(class_='form-control') }}
+                    {% for error in form.short_title.errors %}
+                        <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
 
-    <div class="form-group required">
-        {{ form.category.label(class="contorl-label") }}
-        {{ form.category(class="form-control") }}
+                <div class="form-group required">
+                    {{ form.tags.label(class="control-ladel") }}
+                    <br />
+                    {# {{ form.tags(class="form-conrotl", placeholder="输入分类,用英文逗号或回车分割") }}#}
+                    {# <input class="form-control" id="tags" name="tags" placeholder="输入分类,使用英文逗号或Enter键分割" type="text" value="">#}
+                    <input class= "form-control" placeholder ="输入分类,用英文逗号或回车分割" id = "tags" name = "tags" value="" type = "text" data-role="tagsinput"/>
+                </div>
+
+                <div class="form-group required">
+                    {{ form.category.label(class="contorl-label") }}
+                    {{ form.category(class="form-control") }}
+                </div>
+
+                <div id="test-editormd" class="form-control">
+                    {{form.body(class="form-control",style="display:none;",id="ts")}}
+                </div>
+                <button type="submit" class="btn btn-primary form-control">提交</button>
+            </form>
+        </div>
     </div>
-
-        <div id="test-editormd" class="form-control">
-            {{form.body(class="form-control",style="display:none;",id="ts")}}
-        </div>
-        <button type="submit" class="btn btn-primary form-control">提交</button>
-    </form>
 {% endblock %}
 
 {# 定义一个空的cod_md_3块。来取消右边的栏目。 #}
 {% block col_md_3 %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block scripts %}
     {{ super() }}

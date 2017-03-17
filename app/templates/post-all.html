@@ -12,7 +12,6 @@
 {# 用于展示全年/全月/全天文章 的模板. #}
 
 {% block page_content %}
-    <div class="col-md-9">
         <div class="alert alert-success">您正在查看:{{ tag_or_time }}</div>
         {% for post in posts %}
             <div class="panel panel-default">
@@ -40,6 +39,4 @@
                 {{ macros.pagination_widget(pagination, '.index') }}
             </div>
         {% endif %}
-    </div>
-
 {% endblock %}

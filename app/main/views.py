@@ -229,3 +229,9 @@ def music():
 @main.route('/about')
 def about():
     return render_template('about.html')
+
+
+@main.route('/search', methods=['POST'])
+def search():
+    return '该功能尚未开发'
+

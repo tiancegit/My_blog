@@ -65,6 +65,7 @@
     {% block content %}
         <div class="container" id="main">
             <div class="row">
+            <div class="col-md-9">
                 {% for message in get_flashed_messages(with_categories=True) %}
                     <div class="alert alert-{{ message[0] }}">
                         <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -73,11 +74,12 @@
                 {% endfor %}
 
                 {% block page_content %}{% endblock %}
+            </div>
                 {% block col_md_3 %}
                     {#    右边各个栏目    #}
                     <div class="col-md-3">
                         {# 搜索框 #}
-                        <form method="post" action="" class="panel-body">
+                        <form method="post" action="{{ url_for('main.search') }}" class="panel-body">
                             <div class="input-group">
                                 <div class="form-control-wrapper">
                                     <input type="text" name="s" class="form-control floating-label" placeholder="搜索" size="32" />

@@ -8,17 +8,7 @@
 
 {% block title %}宁缺のblog{% endblock %}
 
-
-<div class="form-group  required"><label class="control-label" for="email">邮箱</label>
-
-    <input class="form-control" id="email" name="email" required type="text" value="">
-
-</div>
-
-
 {% block page_content %}
-    <br />
-    <br />
     <div class="container">
         <div class="row">
             <h1 class="text-center">Edit Post</h1>
@@ -41,6 +31,9 @@
         </div>
     </div>
 {% endblock %}
+
+{% block col_md_3 %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block scripts %}
     {{ super() }}
