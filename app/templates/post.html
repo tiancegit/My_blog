@@ -42,8 +42,12 @@
                 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":[],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
             </div>
         </div>
-        {# 标签数量 #}
-        <p class="tags">标签：<a href="#">Python</a></p>
+        {# 标签 #}
+        <p class="tags">标签：
+            {% for tag in tags %}
+            <a href="#">{{ tag.name }}</a>&nbsp;
+            {% endfor %}
+        </p>
         <div class="row">
             <div id="comments">
                 <div class="alert alert-info">

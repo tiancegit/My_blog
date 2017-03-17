@@ -13,7 +13,7 @@
 
 {% block page_content %}
     <div class="col-md-9">
-        <div class="alert alert-success">您正在查看: {{ posts[1].timestamp.year }}年{{ posts[1].timestamp.month    }}月</div>
+        <div class="alert alert-success">您正在查看:{{ tag_or_time }}</div>
         {% for post in posts %}
             <div class="panel panel-default">
                 <div class="panel-body">

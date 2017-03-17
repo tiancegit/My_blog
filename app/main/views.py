@@ -4,14 +4,17 @@ from flask import render_template, flash, redirect, url_for, request, current_ap
 from flask_login import login_required
 from .forms import PostForm, EditPostForm, CommentForm
 from . import main
-from ..moudle import User, Post, db, Comment
+from ..moudle import User, Post, db, Comment, Tags
 import os
 
 
 @main.before_request
 def latest_post_comment():
+    # 最新评论，最新文章等变量
     g.latest_comments = Comment.query.order_by(Comment.timestamp.desc()).limit(10)
     g.latest_posts = Post.query.order_by(Post.timestamp.desc()).limit(10)
+    g.tags = Tags.query.all()
+
 
 @main.route('/')
 def index():
@@ -37,11 +40,26 @@ def writer():
     # 编写文章的路由
     form = PostForm()
     if form.validate_on_submit():
+        tags_list = []
+        category_list = form.tags.data.split(',')
+        # 如果已经有这个分类就不用创建
+        for t in category_list:
+            tag = Tags.query.filter_by(name=t).first()
+            if tag is None:
+                tag = Tags()
+                tag.name = t
+                #  tag.save()
+            tags_list.append(tag)
+
         post = Post(title=form.title.data,
                     body=form.body.data,
-                    short_title=form.short_title.data)
+                    short_title=form.short_title.data,
+                    tags=tags_list)
         db.session.add(post)
+        db.session.commit()
+        db.session.rollback()
         flash(u'文章已经保存.', 'success')
+        return redirect('mian.index')
     return render_template('writer.html', form=form)
 
 
@@ -119,17 +137,20 @@ def post_all(year, month=None, day=None):
         start_time = '{year}-00-00 00:00:00.000000'.format(year=year)
         end_time = '{year}-00-01 00:00:00.000000'.format(year=year+1)
         pagination, posts = check_post(start_time, end_time)
+        tag_or_time = '{year}年的文章'.format(year=year)
     elif year is not None and month is not None and day is None:
         # 路由 /2017/03
         start_time = '{year}-{month:0>2d}-00 00:00:00.000000'.format(year=year, month=month)
         end_time = '{year}-{month:0>2d}-00 23:59:59.000000'.format(year=year, month=month+1)
         pagination, posts = check_post(start_time, end_time)
+        tag_or_time = '{year}年{month:0>2d}月的文章'.format(year=year, month=month)
     elif year is not None and month is not None and day is not None:
         # 路由 /2017/03/04
         start_time = '{year}-{month:0>2d}-{day:0>2d} 00:00:00.000000'.format(year=year, month=month, day=day)
         end_time = '{year}-{month:0>2d}-{day:0>2d} 23:59:59.000000'.format(year=year, month=month, day=day)
         pagination, posts = check_post(start_time, end_time)
-    return render_template('post-all.html', posts=posts, pagination=pagination, year=year, month=month, day=day)
+        tag_or_time = '{year}年{month:0>2d}月{day:0>2d}日的文章'.format(year=year, month=month, day=day)
+    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=tag_or_time)
 
 
 @main.route('/<int:year>/<int:month>/<int:day>/<short_title>', methods=['GET', 'POST'])
@@ -156,10 +177,26 @@ def post(year, month, day, short_title):
             return redirect(url_for('main.post', year=post.timestamp.year, month=post.timestamp.month,
                                     day=post.timestamp.day, short_title=post.short_title))
         comments = post.comments.order_by(Comment.timestamp.asc())
-        return render_template('post.html', post=post, form=form, comments=comments)
+        tags = post.tags.all()
+        return render_template('post.html', post=post, form=form, comments=comments, tags=tags)
     else:
         return abort(404)
 
+
+@main.route('/tag/<tag_name>')
+def tag(tag_name):
+    tag = Tags.query.filter_by(name=tag_name).first()
+    # 加载并验证请求的tag标签
+    if tag is None:
+        flash('没有这个标签!')
+        abort(404)
+    page = request.args.get('page', type=int)
+    pagination = tag.posts.order_by(
+        Post.timestamp.desc()).paginate(
+        page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'%s标签下的文章' % tag_name)
 
 @main.route('/tech')
 def tech():
@@ -178,8 +215,3 @@ def music():
 @main.route('/about')
 def about():
     return render_template('about.html', current_time=datetime.utcnow())
-
-
-@main.route('/post_reproduced')
-def post_reproduced():
-    pass

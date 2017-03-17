@@ -128,11 +128,9 @@
                                 <h3 class="panel-title">标签</h3>
                             </a>
                             <div class="tags_box">
-                                <a href="https://xlzd.me/tag/Python/" rel="tag" class="item size-0" title="37 个话题">Python<span class="badge pull-right"> 37</span></a>
-                                <a href="https://xlzd.me/tag/crawler/" rel="tag" class="item size-20" title="10 个话题">Crawler<span class="badge pull-right"> 10</span></a>
-                                <a href="https://xlzd.me/tag/algotithm/" rel="tag" class="item size-5" title="4 个话题">算法<span class="badge pull-right"> 4</span></a>
-                                <a href="https://xlzd.me/tag/re/" rel="tag" class="item size-5" title="3 个话题">re<span class="badge pull-right"> 3</span></a>
-                                <a href="https://xlzd.me/tag/MongoDB/" rel="tag" class="item size-5" title="3 个话题">MongoDB<span class="badge pull-right"> 3</span></a>
+                                {% for tag in g.tags %}
+                                <a href="{{ url_for('main.tag', tag_name=tag.name) }}" rel="tag" class="item size-0" title="{{ tag.posts.count() }} 个话题">{{ tag.name }}<span class="badge pull-right"> {{ tag.posts.count() }}</span></a>
+                                {% endfor %}
                             </div>
                         </div>
                         {# 归档 #}
@@ -185,3 +183,10 @@
     {% endblock %}
 
 {% endblock %}
+
+{##}
+{#                                <a href="https://xlzd.me/tag/Python/" rel="tag" class="item size-0" title="37 个话题">Python<span class="badge pull-right"> 37</span></a>#}
+{#                                <a href="https://xlzd.me/tag/crawler/" rel="tag" class="item size-20" title="10 个话题">Crawler<span class="badge pull-right"> 10</span></a>#}
+{#                                <a href="https://xlzd.me/tag/algotithm/" rel="tag" class="item size-5" title="4 个话题">算法<span class="badge pull-right"> 4</span></a>#}
+{#                                <a href="https://xlzd.me/tag/re/" rel="tag" class="item size-5" title="3 个话题">re<span class="badge pull-right"> 3</span></a>#}
+{#                                <a href="https://xlzd.me/tag/MongoDB/" rel="tag" class="item size-5" title="3 个话题">MongoDB<span class="badge pull-right"> 3</span></a>#}

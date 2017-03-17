@@ -1,15 +1,19 @@
 # -*- coding: utf-8 -*-
+import hashlib
+from datetime import datetime
+
+import bleach
+from flask import current_app
+from flask import request
+from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from markdown import markdown
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from . import db
 from . import login_manager
-from flask_login import UserMixin
-from werkzeug.security import generate_password_hash, check_password_hash
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
-from flask import current_app
-from datetime import datetime
-from markdown import markdown
-import bleach
-import hashlib
-from flask import request
+
+
 # from . import create_app
 #
 # import flask_whooshalchemy as whooshalchemy
@@ -83,6 +87,10 @@ def load_user(user_id):
     # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None
     return User.query.get(int(user_id))
 
+registrations = db.Table('registrations',
+                         db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
+                         db.Column('tags_id', db.Integer, db.ForeignKey('tags.id')))
+
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -95,6 +103,7 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     body_html = db.Column(db.Text)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
+    tags = db.relationship('Tags', secondary=registrations, backref=db.backref('posts', lazy='dynamic'), lazy='dynamic')
 
     # 处理body字段变化的函数
     @staticmethod
@@ -150,3 +159,26 @@ class Comment(db.Model):
             url=url, hash=hash, size=size, default=default, rating=rating)
 
 
+class Tags(db.Model):
+    __tablename__ = 'tags'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), nullable=False, unique=True)
+
+    def __repr__(self):
+        return '<Tags %r>' % self.name
+
+    @staticmethod
+    def seed():
+        db.session.add_all(map(lambda r: Tags(name=r), ['others', 'python', 'linux']))
+        db.session.commit()
+
+        # 生成虚拟数据/暂时不需要
+        # @staticmethod
+        # def generate_fake(count=20):
+        #     from sqlalchemy.exc import IntegrityError
+        #     from random import seed
+        #     import forgery_py
+        #     seed()
+        #     for i in range(count):
+        #         c = Tags(name=forgery_py.internet.user_name(True))
+        #         db.session.add(c)
