@@ -104,6 +104,7 @@ class Post(db.Model):
     body_html = db.Column(db.Text)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
     tags = db.relationship('Tags', secondary=registrations, backref=db.backref('posts', lazy='dynamic'), lazy='dynamic')
+    category = db.Column(db.String(64))
 
     # 处理body字段变化的函数
     @staticmethod

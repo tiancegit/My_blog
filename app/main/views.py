@@ -41,25 +41,25 @@ def writer():
     form = PostForm()
     if form.validate_on_submit():
         tags_list = []
-        category_list = form.tags.data.split(',')
+        form_tags_list = form.tags.data.split(',')
         # 如果已经有这个分类就不用创建
-        for t in category_list:
+        for t in form_tags_list:
             tag = Tags.query.filter_by(name=t).first()
             if tag is None:
                 tag = Tags()
                 tag.name = t
-                #  tag.save()
             tags_list.append(tag)
-
         post = Post(title=form.title.data,
                     body=form.body.data,
                     short_title=form.short_title.data,
-                    tags=tags_list)
+                    tags=tags_list,
+                    # category.data 是一个list[tuple()]的结构，所以需要切片。
+                    category=form.category.data)
         db.session.add(post)
         db.session.commit()
         db.session.rollback()
         flash(u'文章已经保存.', 'success')
-        return redirect('mian.index')
+        return redirect(url_for('main.index'))
     return render_template('writer.html', form=form)
 
 
@@ -196,22 +196,36 @@ def tag(tag_name):
         page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'%s标签下的文章' % tag_name)
+    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'%s 标签下的文章' % tag_name)
 
 @main.route('/tech')
 def tech():
-    return ''
+    page = request.args.get('page', type=int)
+    pagination = Post.query.filter_by(category=u'技术').order_by(
+        Post.timestamp.desc()).paginate(
+        page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    print posts
+    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'技术 分类下的文章' )
+
 
 @main.route('/isay')
 def isay():
-    return 'isay'
+    page = request.args.get('page', type=int)
+    pagination = Post.query.filter_by(category=u'杂谈').order_by(
+        Post.timestamp.desc()).paginate(
+        page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
+        error_out=False)
+    posts = pagination.items
+    return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'杂谈 分类下的文章')
 
 
 @main.route('/music')
 def music():
-    return 'music'
+    return render_template('music.html')
 
 
 @main.route('/about')
 def about():
-    return render_template('about.html', current_time=datetime.utcnow())
+    return render_template('about.html')

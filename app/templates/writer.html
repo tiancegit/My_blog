@@ -35,9 +35,14 @@
             {{ form.tags.label(class="control-ladel") }}
             <br />
             {# {{ form.tags(class="form-conrotl", placeholder="输入分类,用英文逗号或回车分割") }}#}
-{#             <input class="form-control" id="tags" name="tags" placeholder="输入分类,使用英文逗号或Enter键分割" type="text" value="">#}
+            {# <input class="form-control" id="tags" name="tags" placeholder="输入分类,使用英文逗号或Enter键分割" type="text" value="">#}
             <input class= "form-control" placeholder ="输入分类,用英文逗号或回车分割" id = "tags" name = "tags" value="" type = "text" data-role="tagsinput"/>
         </div>
+
+    <div class="form-group required">
+        {{ form.category.label(class="contorl-label") }}
+        {{ form.category(class="form-control") }}
+    </div>
 
         <div id="test-editormd" class="form-control">
             {{form.body(class="form-control",style="display:none;",id="ts")}}

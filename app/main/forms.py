@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectMultipleField, ValidationError, SubmitField
+from wtforms import StringField, TextAreaField, SelectField, ValidationError, SubmitField
 from wtforms.validators import DataRequired, length, Email, Regexp, Optional
 from ..moudle import Post
 
@@ -9,6 +9,7 @@ class PostForm(FlaskForm):
     title = StringField(u'标题', validators=[DataRequired(message=u'这个字段是必填项'), length(max=255)])
     short_title = StringField(u'英文短标题', validators=[DataRequired(message=u'这个字段是必填项'), length(max=255)])
     tags = StringField(u"标签", validators=[DataRequired(message=u'这个字段是必填项')])
+    category = SelectField(u'选择分类', choices=[('技术', '技术'), ('杂谈', '杂谈')], validators=[DataRequired(message=u'这个字段是必选项')])
     body = TextAreaField(u'文章内容', validators=[DataRequired()])
     submit = SubmitField(u'提交')
 
