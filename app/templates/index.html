@@ -32,11 +32,12 @@
             </div>
         </div>
     {% endfor %}
-
-    {% if pagination %}
-        <div class="page-navigato">
-            {{ macros.pagination_widget(pagination, '.index') }}
-        </div>
+    {% if  posts | count  >= 10 %}
+        {% if pagination %}
+            <div class="page-navigato">
+                {{ macros.pagination_widget(pagination, '.index') }}
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
 

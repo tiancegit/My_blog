@@ -2,7 +2,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from . import auth
 from .forms import LoginForm, RegistrationForm, ChangePasswordForm, PasswordRestRequestForm, PasswordRestForm
-from ..moudle import User, db
+from ..models import User, db
 from flask_login import login_user, login_required, logout_user, current_user
 from ..email import send_email
 

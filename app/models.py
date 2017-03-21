@@ -81,11 +81,11 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         return True
 
+    @login_manager.user_loader
+    def load_user(user_id):
+        # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None
+        return User.query.get(int(user_id))
 
-@login_manager.user_loader
-def load_user(user_id):
-    # 接收以 Unicode 字符串表示的用户标示符.找到用户,返回用户对象.否则,返回None
-    return User.query.get(int(user_id))
 
 registrations = db.Table('registrations',
                          db.Column('post_id', db.Integer, db.ForeignKey('posts.id')),
@@ -121,16 +121,25 @@ class Post(db.Model):
                 'img': ['src', 'alt']
             }
         ))
-#
-#         def __repr__(self):
-#             return '<Post %r>' % self.text
-#
-# whooshalchemy.whoosh_index(current_app, Post)
 
+    @staticmethod
+    def generate_fake(count=100):
+        from random import seed, randint
+        import forgery_py
+
+        seed()
+        for i in xrange(count):
+            u = User.query.first()
+            p = Post(title=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                     short_title=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                     body=forgery_py.lorem_ipsum.sentences(randint(1, 3)),
+                     timestamp=forgery_py.date.date(True),
+                     author=u)
+            db.session.add(p)
+            db.session.commit()
 
 # 注册监听事件. 当body字段发生变化时,触发函数,完成对应的html_body字段的更新.
 db.event.listen(Post.body, 'set', Post.on_changed_post)
-
 
 class Comment(db.Model):
     __tablename__ = 'comments'

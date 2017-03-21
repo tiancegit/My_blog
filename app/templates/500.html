@@ -1,1 +1,23 @@
-500
+{% extends 'base.html' %}
+{% import '_macros.html' as macros %}
+
+{% block title %}宁缺のblog{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/highlight.css') }}"/>
+    <script src="{{ url_for('static',filename='js/highlight.js') }}"></script>
+{% endblock %}
+
+{# 用于展示全年/全月/全天文章 的模板. #}
+
+{% block page_content %}
+    <div class="alert alert-success">您正在查看:500页</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="post-content">
+                <h3>服务器出现错误</h3>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,11 +1,24 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 from flask import render_template, flash, redirect, url_for, request, current_app, jsonify, Response, abort, g
-from flask_login import login_required
+from flask_login import login_required, current_user
 from .forms import PostForm, EditPostForm, CommentForm
 from . import main
-from ..moudle import User, Post, db, Comment, Tags
+from ..models import User, Post, db, Comment, Tags
 import os
+from flask_sqlalchemy import get_debug_queries
+
+
+@main.after_app_request
+def after_request(response):
+    # 报告缓慢的数据库查询
+    for query in get_debug_queries():
+        if query.duration >= current_app.config['MY_BLOG_SLOW_DB_QUERY_TIME']:
+            current_app.logger.warning(
+                'Slow query:%s\nParameters: %s\nDuration: %fs\nContext: %s\n'
+                % (query.statement, query.parameters, query.duration,
+                   query.context))
+    return response
 
 
 @main.before_request
@@ -53,6 +66,7 @@ def writer():
                     body=form.body.data,
                     short_title=form.short_title.data,
                     tags=tags_list,
+                    author=current_user._get_current_object(),
                     # category.data 是一个list[tuple()]的结构，所以需要切片。
                     category=form.category.data)
         db.session.add(post)
@@ -234,4 +248,26 @@ def about():
 @main.route('/search', methods=['POST'])
 def search():
     return '该功能尚未开发'
+
+
+@main.route('/remove_post/<int:post_id>')
+@login_required
+def remove_post(post_id):
+    # 删除文章，从post页面传入
+    post = Post.query.get_or_404(post_id)
+    if current_user != post.author:
+        abort(404)
+    db.session.delete(post)
+    flash(u'文章已经删除了', 'info')
+    return redirect(url_for('main.index'))
+
+
+@main.route('/remove_comment/<int:comment_id>')
+@login_required
+def remove_comment(comment_id):
+    comment = Comment.query.get_or_404(comment_id)
+    db.session.delete(comment)
+    flash(u'评论已经删除了', 'info')
+    return redirect(url_for('main.post',  year=comment.post.timestamp.year, month=comment.post.timestamp.month,
+                            day=comment.post.timestamp.day, short_title=comment.post.short_title))
 

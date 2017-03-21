@@ -19,16 +19,20 @@
                 <span>作者：<a href="{{ url_for('main.index') }}" target="_blank">宁缺</a> | </span>
                 <span>分类：<a href="{{ url_for('main.tech') }}">{{ post.category }}</a> | </span>
                 <span>时间：{{ moment(post.timestamp).format("YYYY-MM-DD HH:mm:ss") }} | </span>
-                <span>评论：<a href="#">{{ post.comments.count() }} 评论</a> </span>
+                <span>评论：<a href="#">{{ post.comments.count() }} 评论</a> | {{ post.author_id }}</span>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('main.remove_post', post_id=post.id) }}">删除文章</a>
+                {% endif %}
             </div>
             <div class="post-content">
                 {{ post.body_html | safe }}
             </div>
             <br />
             <hr />
+
             {# 知识协议 #}
             <div style="text-align: center; float:left;margin-right:10px;">
-                <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/3.0/cn/">
+                <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by-  nc-sa/3.0/cn/">
                     <img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/cn/88x31.png">
                 </a>
                 <br>
@@ -39,6 +43,7 @@
             <div class="bdsharebuttonbox" style="text-align:right;float:right;marin-right:10px">
                 <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_linkedin" data-cmd="linkedin" title="分享到linkedin"></a><a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a><a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a></div>
             <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":[],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+
         </div>
     </div>
     {# 标签 #}
@@ -86,6 +91,8 @@
                         {% if current_user.is_authenticated %}
                             <div class="comment-reply">
                                 <a href="mailto:{{ comment.author_email }}" rel="nofollow">联系Ta</a>
+                                <br />
+                                <a href="{{ url_for('main.remove_comment', comment_id=comment.id) }}">删除评论</a>
                             </div>
                         {% endif %}
                     </li>

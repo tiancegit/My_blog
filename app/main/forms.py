@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, SelectField, ValidationError, SubmitField
 from wtforms.validators import DataRequired, length, Email, Regexp, Optional
-from ..moudle import Post
+from ..models import Post
 
 
 class PostForm(FlaskForm):
