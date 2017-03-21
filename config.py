@@ -21,9 +21,10 @@ class Config:
 
     MY_BLOG_ADMIN = "tiance.1984@gmail.com"
 
-    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = '587'
     MAIL_USE_TLS = True  # SMTP 服务器好像只需要TLS协议
+    MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # 千万不要把账户密码直接写入脚本,特别是准备开源的时候,为了保护账户信息,
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # 可以使用脚本从环境中导入敏感信息
 
