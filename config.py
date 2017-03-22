@@ -21,14 +21,12 @@ class Config:
 
     MY_BLOG_ADMIN = "tiance.1984@gmail.com"
 
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = '587'
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
     MAIL_USE_TLS = True  # SMTP 服务器好像只需要TLS协议
-    MAIL_USE_SSL = True
+    # MAIL_USE_SSL = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # 千万不要把账户密码直接写入脚本,特别是准备开源的时候,为了保护账户信息,
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # 可以使用脚本从环境中导入敏感信息
-
-
 
     @staticmethod
     def init_app(app):
@@ -38,22 +36,10 @@ class Config:
 class DevelopmentConfig(Config):
     # 开发配置子类
     DEBUG = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
     # 配置bootstrap是否使用本地的文件。
     BOOTSTRAP_SERVE_LOCAL = True
     # 全文搜索引擎配置 http://www.ctolib.com/topics-44521.html
     WHOOSH_BASE = os.path.join(basedir, 'data-dev.sqlite')
-
-    MY_BLOG_SUBJECT_PREFIX = '[宁缺の博客]'
-    MY_BLOG_MAIL_SENDER = 'My_Blog Admin <tiance.1984@gmail.com>'
-
-    MY_BLOG_ADMIN = "tiance.1984@gmail.com"
-
-    MAIL_SERVER = 'smtp.googlemail.com'
-    MAIL_PORT = '587'
-    MAIL_USE_TLS = True  # SMTP 服务器好像只需要TLS协议
-    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # 千万不要把账户密码直接写入脚本,特别是准备开源的时候,为了保护账户信息,
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # 可以使用脚本从环境中导入敏感信息
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
