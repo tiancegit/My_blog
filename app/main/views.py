@@ -220,7 +220,6 @@ def tech():
         page, per_page=current_app.config['BLOG_POSTS_PER_PAGE'],
         error_out=False)
     posts = pagination.items
-    print posts
     return render_template('post-all.html', posts=posts, pagination=pagination, tag_or_time=u'技术 分类下的文章' )
 
 

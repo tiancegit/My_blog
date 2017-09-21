@@ -11,10 +11,10 @@ if os.environ.get('MY_BLOG_COVERAGE'):
     import coverage
     COV = coverage.coverage(branch=True, include='app/*')
 
-# 暂时解决了表单项名不能为中文,  在中文字符串前添加 u 也可以解决问题.Mark一下
-import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# # 暂时解决了表单项名不能为中文,  在中文字符串前添加 u 也可以解决问题.Mark一下
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 app = create_app(os.getenv('MY_BLOG_CONFIG') or 'default')
 # 取消jinja2渲染时产生的空行
